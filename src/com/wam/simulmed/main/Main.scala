@@ -1,5 +1,5 @@
 package com.wam.simulmed.main
-
-object Main {
-  
+import com.wam.simulmed.inmovil.Simulacion
+object Main extends App{
+  Simulacion.run()
 }
