@@ -1,5 +1,5 @@
 package com.wam.simulmed.ciudad
 
-class TipoVia {
+case class TipoVia(val nombre:String) {
   
 }

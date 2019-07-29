@@ -1,5 +1,8 @@
 package com.wam.simulmed.inmovil
 
-class Recta {
-  
+trait Recta {
+  type T<: Punto
+  val origen:T
+  val fin:T
+
 }
