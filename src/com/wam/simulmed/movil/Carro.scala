@@ -2,8 +2,13 @@ package com.wam.simulmed.movil
 import com.wam.simulmed.inmovil._
 class Carro(p:Punto, v : Velocidad) extends Vehiculo()(p,v){
   this.placa = this.generarPlacaAleatoria()
-  Vehiculo.setVehiculos += this
   def generarPlacaAleatoria():String={
-    "PLACA DEL CARRO ALEATORIA"
+    val r = scala.util.Random
+    var placa = ""
+    do{
+      placa = r.alphanumeric.filter(_.isLetter).take(3).mkString+(r.nextInt(10)).toString+(r.nextInt(10)).toString+(r.nextInt(10)).toString
+    placa.toUpperCase()
+    }while(!Vehiculo.setPlacas.add(placa))
+    placa
   }
 }

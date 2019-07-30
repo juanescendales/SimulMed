@@ -14,7 +14,7 @@ case class Vehiculo(var placa:String = "")(pos: Punto, vel: Velocidad) extends M
 
 object Vehiculo {
 
-  val setVehiculos:Set[Vehiculo] = Set()
+  val setPlacas:Set[String] = Set()
   
   val pCarros = 0.4
   val pMotos = 0.3 + pCarros
