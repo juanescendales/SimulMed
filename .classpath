@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="libraries/jcommon-1.0.23.jar"/>
 	<classpathentry kind="lib" path="libraries/jfreechart-1.0.19.jar"/>
 	<classpathentry kind="lib" path="libraries/lift-json_2.12-3.3.0.jar"/>
+	<classpathentry kind="lib" path="libraries/paranamer-2.8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
