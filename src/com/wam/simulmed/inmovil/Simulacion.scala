@@ -10,7 +10,7 @@ import com.wam.simulmed.grafico.Grafico
 
 object Simulacion extends Runnable {
   val jsonAdmin = new Json[Salida]
-  val ruta = System.getProperty("user.dir") + "\\src\\"
+  val ruta = System.getProperty("user.dir") + "\\src\\com\\wam\\simulmed\\"
   val parametros = jsonAdmin.leerDatosIniciales(ruta + "parametros.json")
   var running = false
   val grafo = GrafoVias
