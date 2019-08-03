@@ -1,5 +1,8 @@
 package com.wam.simulmed.main
 import com.wam.simulmed.inmovil.Simulacion
-object Main extends App{
-  Simulacion.run()
+object Main{
+  def main(args: Array[String]){
+    Simulacion.cargar()
+  }
+  
 }

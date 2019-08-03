@@ -5,12 +5,14 @@ import com.wam.simulmed.movil._
 import com.wam.simulmed.json.Json
 import com.wam.simulmed.entradaSimulacion._
 import com.wam.simulmed.salidaSimulacion._
+import com.wam.simulmed.grafico.Grafico
 
 
 object Simulacion extends Runnable {
   val jsonAdmin = new Json[Salida]
   val ruta = System.getProperty("user.dir") + "\\src\\"
   val parametros = jsonAdmin.leerDatosIniciales(ruta + "parametros.json")
+  var running = false
   val grafo = GrafoVias
   var t: Double = 0
   var dt: Double = parametros.pametrosSimulacion.dt
@@ -22,6 +24,7 @@ object Simulacion extends Runnable {
   val totalVehiculos = (((new scala.util.Random).nextDouble() * (Simulacion.maxVehiculos - Simulacion.minVehiculos)) + Simulacion.minVehiculos).toInt
 
   var listaVias = ArrayBuffer.empty[Via]
+  var hilo: Thread = _ //new Thread(Simulacion)
 
   def cargar() {
 
@@ -67,6 +70,7 @@ object Simulacion extends Runnable {
     val gu80 = new Interseccion(19500, 12000, "Guay 80")
     val _65_80 = new Interseccion(19500, 10500, "65 con 30")
     val gu_37S = new Interseccion(21000, 12000, "Guay con 37S")
+
 
     val vias = ArrayBuffer(
       new Via(niquia, lauraAuto, 80, TipoVia("Carrera"), Sentido.dobleVia, "64C", "Auto Norte"),
@@ -142,12 +146,34 @@ object Simulacion extends Runnable {
       new Via(viva, gu_37S, 60, TipoVia("Calle"), Sentido.dobleVia, "63", "37S"))
     listaVias = vias
     grafo.construir(vias)
-
+    val grafico = Grafico
+    grafico.iniciarGrafico(vias)
 
   }
+  def start() {
+    if (Simulacion.running) {
+      Simulacion.stop()
+    }
 
+    hilo = new Thread(Simulacion)
+    hilo.start()
+  }
+
+  def stop() {
+    Simulacion.running = false
+    hilo.join()
+    Vehiculo.setPlacas.clear()
+    
+    Grafico.borrarVehiculos(VehiculoSimulacion.listaDeVehiculosSimulacion++VehiculoSimulacion.listaDeVehiculosSimulacionDetenidos)
+    VehiculoSimulacion.listaDeVehiculosSimulacion.clear()
+    VehiculoSimulacion.listaDeVehiculosSimulacionDetenidos.clear()
+    Simulacion.t = 0
+  }
   def run() {
-
+    for (i <- 0 until Simulacion.totalVehiculos) {
+      VehiculoSimulacion.apply()
+    }
+    Simulacion.running = true
     //CALCULOS ININCIALES
 
     def contar(rec: ArrayBuffer[Interseccion]): scala.collection.mutable.Map[Interseccion, Int] = {
@@ -201,9 +227,23 @@ object Simulacion extends Runnable {
     val velVehiProm = Velocidad.conversorMetroSegAKmHor((velocidadesVehiculos.sum) / (velocidadesVehiculos.length))
 
     //FIN CALCULOS INICIALES
-    //While con la simulacion
+
+    while (!VehiculoSimulacion.listaDeVehiculosSimulacion.isEmpty && Simulacion.running) {
+      val grafico = Grafico
+      VehiculoSimulacion.listaDeVehiculosSimulacion.foreach(vehiculo => {
+        vehiculo.mover(Simulacion.dt)
+        grafico.actualizarVehiculo(vehiculo)
+        if (vehiculo.vehiculo.detenido) {
+          VehiculoSimulacion.listaDeVehiculosSimulacionDetenidos.+=(vehiculo)
+        }
+      })
+      VehiculoSimulacion.listaDeVehiculosSimulacionDetenidos.foreach(vehiculo => vehiculo.pararVehiculo(vehiculo))
+      Simulacion.t += Simulacion.dt
+      Thread.sleep(tRefresh)
+    }
 
     //Calculos Finales
+    if (Simulacion.running) {
       val tiempoRealidad = t
       val tiempoSimulacion: Double = tiempoRealidad * (tRefresh.toDouble / 1000)
 
@@ -217,7 +257,7 @@ object Simulacion extends Runnable {
       val resultados = new ResultadosSimulacion(salidaVehiculos, mallaVial, tiempos, salidaVelocidades, distancias)
       val salida = new Salida(resultados)
       jsonAdmin.escribirArchivo(ruta + "resultados.json", salida)
-    
+    }
 
     //Fin Calculos Finales
 
