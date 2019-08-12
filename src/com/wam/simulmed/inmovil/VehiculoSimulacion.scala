@@ -8,6 +8,7 @@ import scala.collection.mutable.ArrayBuffer
 
 class VehiculoSimulacion(val vehiculo: Vehiculo, val recorrido: Queue[Via], val interseccionesRecorrido: Queue[Interseccion], val recorridoCompleto:Array[Via], val interseccionesCompletas:Array[Interseccion]) {
   VehiculoSimulacion.listaDeVehiculosSimulacion += this
+  VehiculoSimulacion.listaDeVehiculosSimulacionParaCalculos += this
 
   private var _viaActual: Via = recorrido.dequeue()
   private var _interseccionDestino: Interseccion = interseccionesRecorrido.dequeue()
@@ -31,7 +32,7 @@ class VehiculoSimulacion(val vehiculo: Vehiculo, val recorrido: Queue[Via], val 
         if (!interseccionesRecorrido.isEmpty) {
           this.viaActual = recorrido.dequeue()
           this.interseccionDestino = interseccionesRecorrido.dequeue()
-          vehiculo.velocidad.anguloYSentidoEntreDosPuntos(vehiculo.posicion, this.interseccionDestino)
+          vehiculo.velocidad.sentidoEntreDosPuntos(vehiculo.posicion, this.interseccionDestino,viaActual.angulo)
         } else {
           vehiculo.detenido = true
         }
@@ -45,7 +46,7 @@ class VehiculoSimulacion(val vehiculo: Vehiculo, val recorrido: Queue[Via], val 
 }
 
 object VehiculoSimulacion {
-
+  val listaDeVehiculosSimulacionParaCalculos = new ArrayBuffer[VehiculoSimulacion]
   val listaDeVehiculosSimulacion = new ArrayBuffer[VehiculoSimulacion]
   val listaDeVehiculosSimulacionDetenidos=new ArrayBuffer[VehiculoSimulacion]
 
@@ -70,7 +71,7 @@ object VehiculoSimulacion {
     val interseccionInicial = interseccionesRecorrido.head
     val puntoOrigen = new Punto(origen.x, origen.y)
     val vehiculoDeSimulacion = new VehiculoSimulacion(Vehiculo(puntoOrigen, Velocidad(magnitudVelocidadAleatoria)(Angulo(0))), viasRecorrido, interseccionesRecorrido,viasRecorridoCompleto,interseccionesRecorridoCompleto)
-    vehiculoDeSimulacion.vehiculo.velocidad.anguloYSentidoEntreDosPuntos(origen, interseccionInicial)
+    vehiculoDeSimulacion.vehiculo.velocidad.sentidoEntreDosPuntos(origen, interseccionInicial,viaInicial.angulo)
     val grafico=Grafico
     grafico.cargarVehiculo(vehiculoDeSimulacion)
     return vehiculoDeSimulacion

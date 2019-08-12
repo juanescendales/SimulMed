@@ -6,3 +6,5 @@ case class Via (val origen:Interseccion , val fin:Interseccion, val velMaxima:Do
   type T = Interseccion
   val distancia:Double = Math.sqrt(Math.pow(fin.x - origen.x,2) + Math.pow(fin.y - origen.y,2))
 }
+
+

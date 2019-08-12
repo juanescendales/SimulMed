@@ -13,11 +13,9 @@ case class Velocidad(private var _magnitud:Double )( val direccion: Angulo = new
   def sentidoY_=(sentidoY: Int) = _sentidoY = sentidoY
   
   
-
-  def anguloYSentidoEntreDosPuntos(p1: Punto, p2: Punto): Unit = {
+  def sentidoEntreDosPuntos(p1: Punto, p2: Punto, magnitudAngular:Double): Unit = {
     val dy = p2.y - p1.y
     val dx = p2.x - p1.x
-    val magnitudAngular = math.atan(math.abs(dy) / math.abs(dx)).toDegrees
     var sentidoy = 1
     var sentidox = 1
     if (dy < 0) {
@@ -30,7 +28,6 @@ case class Velocidad(private var _magnitud:Double )( val direccion: Angulo = new
     this.direccion.valor = magnitudAngular
     this.sentidoX = sentidox
     this.sentidoY = sentidoy
-
   }
 }
 

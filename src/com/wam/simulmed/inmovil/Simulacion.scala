@@ -169,6 +169,7 @@ object Simulacion extends Runnable {
     VehiculoSimulacion.listaDeVehiculosSimulacionDetenidos.clear()
     Simulacion.t = 0
   }
+
   def run() {
     for (i <- 0 until Simulacion.totalVehiculos) {
       VehiculoSimulacion.apply()
