@@ -1,4 +1,4 @@
-# SimulMed
+﻿# SimulMed
 Trabajo temática :Programación funcional UNALMED.
 NOMBRES
 Juan Esteban Cendales  cc: 1001216949
