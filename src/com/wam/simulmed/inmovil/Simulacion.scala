@@ -23,7 +23,7 @@ object Simulacion extends Runnable {
   //aspectos de aceleracion que hay que meter en el json
   val minAceleracion: Double = 5.0
   val maxAceleracion: Double = 20.0
-  val distFrenado: Double = 500
+  val XSemaforoFrenar: Double = 500
   //FIN
   val totalVehiculos = (((new scala.util.Random).nextDouble() * (Simulacion.maxVehiculos - Simulacion.minVehiculos)) + Simulacion.minVehiculos).toInt
 

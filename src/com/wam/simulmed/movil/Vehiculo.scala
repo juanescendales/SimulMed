@@ -5,12 +5,11 @@ import scala.collection.mutable.Set
 abstract case class Vehiculo(var placa: String = "")(pos: Punto, vel: Velocidad, acel: Aceleracion) extends Movil(pos, vel,acel) with MovimientoUniformementeAcelerado {
 
   private var _detenido = false
-  private var _frenando = false
+  
   def detenido = _detenido
   def detenido_=(detenido: Boolean) = _detenido = detenido
   
-  def frenando = _frenando
-  def frenando_=(frenando: Boolean) = _frenando = frenando
+
 
 }
 

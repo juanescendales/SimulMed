@@ -7,10 +7,11 @@ trait MovimientoUniformementeAcelerado {
   def avance(dt: Double): Unit = {
     
     
-    if(velocidad.magnitud >= velocidad.velocidadTotalMagnitud){
+    if(velocidad.magnitud >= velocidad.velocidadTotalMagnitud && !aceleracion.frenando){
       velocidad.magnitud_=(velocidad.velocidadTotalMagnitud)
+      aceleracion.magnitud_=(0)
     }else{
-      val v = velocidad.magnitud + (aceleracion.aceleracionArranque * dt)
+      val v = velocidad.magnitud + (aceleracion.magnitud * dt)
       velocidad.magnitud_=(v)
     }
     

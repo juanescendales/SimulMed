@@ -24,18 +24,23 @@ class Viaje(val vehiculo: Vehiculo, val recorrido: Queue[Via], val interseccione
       vehiculo.avance(dt)
       val xViaFin = interseccionDestino.x
       val yViaFin = interseccionDestino.y
-      val margenError = (vehiculo.velocidad.magnitud * dt) + 5
+      val margenError = (vehiculo.velocidad.velocidadTotalMagnitud * dt) + 5
       val distanciaDelCarroALaInterseccion = Punto.distanciaEntre2Puntos(interseccionDestino, vehiculo.posicion)
-      if (distanciaDelCarroALaInterseccion <= Simulacion.distFrenado && !vehiculo.frenando) {
-        vehiculo.frenando = true
-        vehiculo.aceleracion.magnitud_=(-1*(1/Simulacion.distFrenado)*(math.pow(vehiculo.velocidad.magnitud, 2)/2))
-        println(vehiculo.aceleracion.magnitud)
+      
+      //hay que verificar 
+      
+      if (distanciaDelCarroALaInterseccion <= Simulacion.XSemaforoFrenar && !vehiculo.aceleracion.frenando) {
+        vehiculo.aceleracion.frenando = true
+        vehiculo.aceleracion.magnitud_=(-1 * (1 / Simulacion.XSemaforoFrenar) * (math.pow(vehiculo.velocidad.magnitud, 2) / 2))
+        //println(vehiculo.aceleracion.magnitud)
       }
 
       if (vehiculo.posicion.x > xViaFin - margenError && vehiculo.posicion.x < xViaFin + margenError && vehiculo.posicion.y > yViaFin - margenError && vehiculo.posicion.y < yViaFin + margenError) {
-        vehiculo.frenando = false
+        println("EntroPrro")
+        vehiculo.aceleracion.frenando = false
         vehiculo.posicion.x = xViaFin
         vehiculo.posicion.y = yViaFin
+        vehiculo.aceleracion.magnitud = vehiculo.aceleracion.aceleracionArranque
         if (!interseccionesRecorrido.isEmpty) {
           this.viaActual = recorrido.dequeue()
           this.interseccionDestino = interseccionesRecorrido.dequeue()
@@ -43,8 +48,11 @@ class Viaje(val vehiculo: Vehiculo, val recorrido: Queue[Via], val interseccione
         } else {
           vehiculo.detenido = true
         }
-        vehiculo.velocidad.magnitud_=(0)
+        vehiculo.velocidad.magnitud_=(0) //si esta en rojo meto esta cosa, de otra manera no
+
       }
+      println(vehiculo.velocidad.magnitud)
+      //println(vehiculo.aceleracion.magnitud)
     }
   }
   def pararVehiculo(vehiculo: Viaje) {
@@ -79,7 +87,7 @@ object Viaje {
     interseccionesRecorrido.dequeue()
     val interseccionInicial = interseccionesRecorrido.head
     val puntoOrigen = new Punto(origen.x, origen.y)
-    val vehiculoDeSimulacion = new Viaje(Vehiculo(puntoOrigen, Velocidad(50)(Angulo(0)), Aceleracion(3)), viasRecorrido, interseccionesRecorrido, viasRecorridoCompleto, interseccionesRecorridoCompleto)
+    val vehiculoDeSimulacion = new Viaje(Vehiculo(puntoOrigen, Velocidad(magnitudVelocidadAleatoria)(Angulo(0)), Aceleracion(magnitudAceleracionAleatoria)), viasRecorrido, interseccionesRecorrido, viasRecorridoCompleto, interseccionesRecorridoCompleto)
     vehiculoDeSimulacion.vehiculo.velocidad.sentidoEntreDosPuntos(origen, interseccionInicial, viaInicial.angulo)
     val grafico = Grafico
     grafico.cargarVehiculo(vehiculoDeSimulacion)
