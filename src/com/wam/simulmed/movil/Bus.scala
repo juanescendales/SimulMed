@@ -1,7 +1,7 @@
 
 package com.wam.simulmed.movil
 import com.wam.simulmed.inmovil._
-class Bus(p:Punto, v : Velocidad) extends Vehiculo()(p,v){
+class Bus(p:Punto, v : Velocidad, a:Aceleracion) extends Vehiculo()(p,v,a){
   this.placa = this.generarPlacaAleatoria()
   def generarPlacaAleatoria():String={
     val r = scala.util.Random

@@ -6,7 +6,7 @@ import com.wam.simulmed.grafico.Grafico
 import scala.collection.mutable.Queue
 import scala.collection.mutable.ArrayBuffer
 
-class Viaje(val vehiculo: Vehiculo, val recorrido: Queue[Via], val interseccionesRecorrido: Queue[Interseccion], val recorridoCompleto:Array[Via], val interseccionesCompletas:Array[Interseccion]) {
+class Viaje(val vehiculo: Vehiculo, val recorrido: Queue[Via], val interseccionesRecorrido: Queue[Interseccion], val recorridoCompleto: Array[Via], val interseccionesCompletas: Array[Interseccion]) {
   Viaje.listaDeVehiculosSimulacion += this
   Viaje.listaDeVehiculosSimulacionParaCalculos += this
 
@@ -24,31 +24,39 @@ class Viaje(val vehiculo: Vehiculo, val recorrido: Queue[Via], val interseccione
       vehiculo.avance(dt)
       val xViaFin = interseccionDestino.x
       val yViaFin = interseccionDestino.y
-      val margenError = (vehiculo.velocidad.magnitud*dt) + 5
+      val margenError = (vehiculo.velocidad.magnitud * dt) + 5
+      val distanciaDelCarroALaInterseccion = Punto.distanciaEntre2Puntos(interseccionDestino, vehiculo.posicion)
+      if (distanciaDelCarroALaInterseccion <= Simulacion.distFrenado && !vehiculo.frenando) {
+        vehiculo.frenando = true
+        vehiculo.aceleracion.magnitud_=(-1*(1/Simulacion.distFrenado)*(math.pow(vehiculo.velocidad.magnitud, 2)/2))
+        println(vehiculo.aceleracion.magnitud)
+      }
 
       if (vehiculo.posicion.x > xViaFin - margenError && vehiculo.posicion.x < xViaFin + margenError && vehiculo.posicion.y > yViaFin - margenError && vehiculo.posicion.y < yViaFin + margenError) {
+        vehiculo.frenando = false
         vehiculo.posicion.x = xViaFin
         vehiculo.posicion.y = yViaFin
         if (!interseccionesRecorrido.isEmpty) {
           this.viaActual = recorrido.dequeue()
           this.interseccionDestino = interseccionesRecorrido.dequeue()
-          vehiculo.velocidad.sentidoEntreDosPuntos(vehiculo.posicion, this.interseccionDestino,viaActual.angulo)
+          vehiculo.velocidad.sentidoEntreDosPuntos(vehiculo.posicion, this.interseccionDestino, viaActual.angulo)
         } else {
           vehiculo.detenido = true
         }
+        vehiculo.velocidad.magnitud_=(0)
       }
     }
   }
-  def pararVehiculo(vehiculo:Viaje){
-       Viaje.listaDeVehiculosSimulacion.-=(vehiculo)
+  def pararVehiculo(vehiculo: Viaje) {
+    Viaje.listaDeVehiculosSimulacion.-=(vehiculo)
   }
-  
+
 }
 
 object Viaje {
   val listaDeVehiculosSimulacionParaCalculos = new ArrayBuffer[Viaje]
   val listaDeVehiculosSimulacion = new ArrayBuffer[Viaje]
-  val listaDeVehiculosSimulacionDetenidos=new ArrayBuffer[Viaje]
+  val listaDeVehiculosSimulacionDetenidos = new ArrayBuffer[Viaje]
 
   def apply(): Viaje = {
     val r = new scala.util.Random
@@ -59,7 +67,7 @@ object Viaje {
     }
 
     val camino = (GrafoVias.n(origen)).shortestPathTo(GrafoVias.n(destino))
-    
+
     val interseccionesRecorridoCompleto = camino.get.nodes.map(_.value).toArray
     val viasRecorridoCompleto = camino.get.edges.map(_.label.asInstanceOf[Via]).toArray
 
@@ -67,12 +75,13 @@ object Viaje {
     val viasRecorrido = Viaje.toQueue(viasRecorridoCompleto)
     val viaInicial = viasRecorrido.head
     val magnitudVelocidadAleatoria = Velocidad.conversorKmHorAMetroSeg((r.nextDouble() * (Simulacion.maxVelocidad - Simulacion.minVelocidad)) + Simulacion.minVelocidad)
+    val magnitudAceleracionAleatoria = (r.nextDouble() * (Simulacion.maxAceleracion - Simulacion.minAceleracion)) + Simulacion.minAceleracion
     interseccionesRecorrido.dequeue()
     val interseccionInicial = interseccionesRecorrido.head
     val puntoOrigen = new Punto(origen.x, origen.y)
-    val vehiculoDeSimulacion = new Viaje(Vehiculo(puntoOrigen, Velocidad(magnitudVelocidadAleatoria)(Angulo(0))), viasRecorrido, interseccionesRecorrido,viasRecorridoCompleto,interseccionesRecorridoCompleto)
-    vehiculoDeSimulacion.vehiculo.velocidad.sentidoEntreDosPuntos(origen, interseccionInicial,viaInicial.angulo)
-    val grafico=Grafico
+    val vehiculoDeSimulacion = new Viaje(Vehiculo(puntoOrigen, Velocidad(50)(Angulo(0)), Aceleracion(3)), viasRecorrido, interseccionesRecorrido, viasRecorridoCompleto, interseccionesRecorridoCompleto)
+    vehiculoDeSimulacion.vehiculo.velocidad.sentidoEntreDosPuntos(origen, interseccionInicial, viaInicial.angulo)
+    val grafico = Grafico
     grafico.cargarVehiculo(vehiculoDeSimulacion)
     return vehiculoDeSimulacion
   }

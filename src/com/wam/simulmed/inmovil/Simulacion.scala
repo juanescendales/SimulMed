@@ -20,6 +20,11 @@ object Simulacion extends Runnable {
   val maxVehiculos = parametros.pametrosSimulacion.vehiculos.maximo
   val minVelocidad: Double = parametros.pametrosSimulacion.velocidad.minimo
   val maxVelocidad: Double = parametros.pametrosSimulacion.velocidad.maximo
+  //aspectos de aceleracion que hay que meter en el json
+  val minAceleracion: Double = 5.0
+  val maxAceleracion: Double = 20.0
+  val distFrenado: Double = 500
+  //FIN
   val totalVehiculos = (((new scala.util.Random).nextDouble() * (Simulacion.maxVehiculos - Simulacion.minVehiculos)) + Simulacion.minVehiculos).toInt
 
   var listaVias = ArrayBuffer.empty[Via]
@@ -173,9 +178,6 @@ object Simulacion extends Runnable {
       Viaje.apply()
     }
     Simulacion.running = true
-    //CALCULOS ININCIALES
-
-    //FIN CALCULOS INICIALES
 
     while (!Viaje.listaDeVehiculosSimulacion.isEmpty && Simulacion.running) {
       val grafico = Grafico
