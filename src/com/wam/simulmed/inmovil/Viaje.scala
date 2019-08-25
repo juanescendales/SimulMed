@@ -6,9 +6,9 @@ import com.wam.simulmed.grafico.Grafico
 import scala.collection.mutable.Queue
 import scala.collection.mutable.ArrayBuffer
 
-class VehiculoSimulacion(val vehiculo: Vehiculo, val recorrido: Queue[Via], val interseccionesRecorrido: Queue[Interseccion], val recorridoCompleto:Array[Via], val interseccionesCompletas:Array[Interseccion]) {
-  VehiculoSimulacion.listaDeVehiculosSimulacion += this
-  VehiculoSimulacion.listaDeVehiculosSimulacionParaCalculos += this
+class Viaje(val vehiculo: Vehiculo, val recorrido: Queue[Via], val interseccionesRecorrido: Queue[Interseccion], val recorridoCompleto:Array[Via], val interseccionesCompletas:Array[Interseccion]) {
+  Viaje.listaDeVehiculosSimulacion += this
+  Viaje.listaDeVehiculosSimulacionParaCalculos += this
 
   private var _viaActual: Via = recorrido.dequeue()
   private var _interseccionDestino: Interseccion = interseccionesRecorrido.dequeue()
@@ -39,18 +39,18 @@ class VehiculoSimulacion(val vehiculo: Vehiculo, val recorrido: Queue[Via], val 
       }
     }
   }
-  def pararVehiculo(vehiculo:VehiculoSimulacion){
-       VehiculoSimulacion.listaDeVehiculosSimulacion.-=(vehiculo)
+  def pararVehiculo(vehiculo:Viaje){
+       Viaje.listaDeVehiculosSimulacion.-=(vehiculo)
   }
   
 }
 
-object VehiculoSimulacion {
-  val listaDeVehiculosSimulacionParaCalculos = new ArrayBuffer[VehiculoSimulacion]
-  val listaDeVehiculosSimulacion = new ArrayBuffer[VehiculoSimulacion]
-  val listaDeVehiculosSimulacionDetenidos=new ArrayBuffer[VehiculoSimulacion]
+object Viaje {
+  val listaDeVehiculosSimulacionParaCalculos = new ArrayBuffer[Viaje]
+  val listaDeVehiculosSimulacion = new ArrayBuffer[Viaje]
+  val listaDeVehiculosSimulacionDetenidos=new ArrayBuffer[Viaje]
 
-  def apply(): VehiculoSimulacion = {
+  def apply(): Viaje = {
     val r = new scala.util.Random
     val origen: Interseccion = GrafoVias.listaDeNodos(r.nextInt(GrafoVias.listaDeNodos.length))
     var destino: Interseccion = GrafoVias.listaDeNodos(r.nextInt(GrafoVias.listaDeNodos.length))
@@ -63,14 +63,14 @@ object VehiculoSimulacion {
     val interseccionesRecorridoCompleto = camino.get.nodes.map(_.value).toArray
     val viasRecorridoCompleto = camino.get.edges.map(_.label.asInstanceOf[Via]).toArray
 
-    val interseccionesRecorrido = VehiculoSimulacion.toQueue(interseccionesRecorridoCompleto)
-    val viasRecorrido = VehiculoSimulacion.toQueue(viasRecorridoCompleto)
+    val interseccionesRecorrido = Viaje.toQueue(interseccionesRecorridoCompleto)
+    val viasRecorrido = Viaje.toQueue(viasRecorridoCompleto)
     val viaInicial = viasRecorrido.head
     val magnitudVelocidadAleatoria = Velocidad.conversorKmHorAMetroSeg((r.nextDouble() * (Simulacion.maxVelocidad - Simulacion.minVelocidad)) + Simulacion.minVelocidad)
     interseccionesRecorrido.dequeue()
     val interseccionInicial = interseccionesRecorrido.head
     val puntoOrigen = new Punto(origen.x, origen.y)
-    val vehiculoDeSimulacion = new VehiculoSimulacion(Vehiculo(puntoOrigen, Velocidad(magnitudVelocidadAleatoria)(Angulo(0))), viasRecorrido, interseccionesRecorrido,viasRecorridoCompleto,interseccionesRecorridoCompleto)
+    val vehiculoDeSimulacion = new Viaje(Vehiculo(puntoOrigen, Velocidad(magnitudVelocidadAleatoria)(Angulo(0))), viasRecorrido, interseccionesRecorrido,viasRecorridoCompleto,interseccionesRecorridoCompleto)
     vehiculoDeSimulacion.vehiculo.velocidad.sentidoEntreDosPuntos(origen, interseccionInicial,viaInicial.angulo)
     val grafico=Grafico
     grafico.cargarVehiculo(vehiculoDeSimulacion)

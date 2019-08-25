@@ -94,9 +94,9 @@ object Grafico{
     })
   }
   
-  def borrarVehiculos(vehiculosSimulacion: ArrayBuffer[VehiculoSimulacion]) = {
-    vehiculosSimulacion.foreach(vehiculoSimulacion => {
-      dataset.removeSeries(dataset.getSeriesIndex(vehiculoSimulacion.vehiculo.placa))
+  def borrarVehiculos(vehiculosSimulacion: ArrayBuffer[Viaje]) = {
+    vehiculosSimulacion.foreach(Viaje => {
+      dataset.removeSeries(dataset.getSeriesIndex(Viaje.vehiculo.placa))
     })
   }
   
@@ -114,8 +114,8 @@ object Grafico{
   }
   
   
-  def cargarVehiculo(vehiculoSimulacion:VehiculoSimulacion){
-    val vehiculo=vehiculoSimulacion.vehiculo
+  def cargarVehiculo(Viaje:Viaje){
+    val vehiculo=Viaje.vehiculo
     val punto=vehiculo.posicion
     val vehiculoGrafico: XYSeries = new XYSeries(vehiculo.placa)
     vehiculoGrafico.add(punto.x, punto.y)
@@ -123,30 +123,30 @@ object Grafico{
     vehiculo match{
       case vehiculo:Bus=>{
         this.renderer.setSeriesShape(this.dataset.getSeriesCount-1, new Polygon(Array(-3,3,5,0,-5),Array(-6,-6,0,4,0),5))
-        this.renderer.setSeriesPaint(this.dataset.getSeriesCount-1,Color.decode(this.coloresIntersecciones(vehiculoSimulacion.interseccionesCompletas.last)))
+        this.renderer.setSeriesPaint(this.dataset.getSeriesCount-1,Color.decode(this.coloresIntersecciones(Viaje.interseccionesCompletas.last)))
       }
       case vehiculo:Camion=>{
         this.renderer.setSeriesShape(this.dataset.getSeriesCount-1, new Rectangle(-2,-4,4,10))
-        this.renderer.setSeriesPaint(this.dataset.getSeriesCount-1,Color.decode(this.coloresIntersecciones(vehiculoSimulacion.interseccionesCompletas.last)))
+        this.renderer.setSeriesPaint(this.dataset.getSeriesCount-1,Color.decode(this.coloresIntersecciones(Viaje.interseccionesCompletas.last)))
       }
       case vehiculo:Carro=>{
         this.renderer.setSeriesShape(this.dataset.getSeriesCount-1, new Ellipse2D.Double(-4,-4,8,10))
-        this.renderer.setSeriesPaint(this.dataset.getSeriesCount-1,Color.decode(this.coloresIntersecciones(vehiculoSimulacion.interseccionesCompletas.last)))
+        this.renderer.setSeriesPaint(this.dataset.getSeriesCount-1,Color.decode(this.coloresIntersecciones(Viaje.interseccionesCompletas.last)))
       }
       case vehiculo:Moto=>{
         this.renderer.setSeriesShape(this.dataset.getSeriesCount-1, new Polygon(Array(-4, 0, +4, 0),Array(4, 2, 4, -4),4))
-        this.renderer.setSeriesPaint(this.dataset.getSeriesCount-1,Color.decode(this.coloresIntersecciones(vehiculoSimulacion.interseccionesCompletas.last)))
+        this.renderer.setSeriesPaint(this.dataset.getSeriesCount-1,Color.decode(this.coloresIntersecciones(Viaje.interseccionesCompletas.last)))
       }
       case vehiculo:MotoTaxi=>{
         this.renderer.setSeriesShape(this.dataset.getSeriesCount-1, new Polygon(Array(-5,0,5),Array(-5,5,-5),3))
-        this.renderer.setSeriesPaint(this.dataset.getSeriesCount-1,Color.decode(this.coloresIntersecciones(vehiculoSimulacion.interseccionesCompletas.last)))
+        this.renderer.setSeriesPaint(this.dataset.getSeriesCount-1,Color.decode(this.coloresIntersecciones(Viaje.interseccionesCompletas.last)))
       }
     }
     
   }
   
-  def actualizarVehiculo(vehiculoSimulacion:VehiculoSimulacion){
-    val vehiculo=vehiculoSimulacion.vehiculo
+  def actualizarVehiculo(Viaje:Viaje){
+    val vehiculo=Viaje.vehiculo
     val punto=vehiculo.posicion
     val vehiculoGrafico: XYSeries = this.dataset.getSeries(vehiculo.placa)
     vehiculoGrafico.clear()

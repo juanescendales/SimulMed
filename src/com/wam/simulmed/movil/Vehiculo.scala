@@ -2,7 +2,7 @@ package com.wam.simulmed.movil
 import com.wam.simulmed.inmovil._
 import scala.collection.mutable.Set
 
-abstract class Vehiculo(var placa: String = "")(pos: Punto, vel: Velocidad) extends Movil(pos, vel) with MovimientoUniforme {
+abstract case class Vehiculo(var placa: String = "")(pos: Punto, vel: Velocidad) extends Movil(pos, vel) with MovimientoUniformementeAcelerado {
 
   private var _detenido = false
 
