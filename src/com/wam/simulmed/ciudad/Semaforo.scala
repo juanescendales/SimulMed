@@ -1,4 +1,4 @@
 package com.wam.simulmed.ciudad
 import com.wam.simulmed.inmovil._
 
-class Semaforo(xi: Int, yi: Int,var estado: EstadoSemaforo) extends Punto(xi, yi)
+case class Semaforo(xi: Double, yi: Double,val estado: EstadoSemaforo, val via: Via) extends Punto(xi, yi)

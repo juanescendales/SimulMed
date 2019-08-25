@@ -148,6 +148,53 @@ object Simulacion extends Runnable {
       new Via(viva, pqEnv, 60, TipoVia("Calle"), Sentido.dobleVia, "37S", Some("37S")),
       new Via(viva, gu_37S, 60, TipoVia("Calle"), Sentido.dobleVia, "63", Some("37S")))
     listaVias = vias
+    
+    var nodosSemaforos=ArrayBuffer[NodoSemaforo]()
+    def cargarSemaforosVia(via:Via)={
+     val nodoInicio = NodoSemaforo(via.origen)()
+     val nodoFin = NodoSemaforo(via.fin)()
+     via.sentido match{
+       case Sentido("Un sentido")=>{
+         val indice=nodosSemaforos.indexOf(nodoFin)
+         if(indice == -1){
+           var x:Double=0
+           var y:Double=0
+            via.angulo match{
+             case 90.0=> {x=via.fin.x;y=via.fin.y-10}
+             case -90.0=> {x=via.fin.x;y=via.fin.y+10}
+             case ang =>if(ang>90){x=via.fin.x+10;y=(via.fin.x+10)*math.tan(via.angulo)} else {x=via.fin.x-10;y=(via.fin.x-10)*math.tan(via.angulo)}
+            }
+           val semaforoFin=Semaforo(x,y,EstadoVerde,via)
+           
+         }
+       }
+       case Sentido("Doble via")=>{
+         val indiceFin=nodosSemaforos.indexOf(nodoFin)
+         val indiceInicio=nodosSemaforos.indexOf(nodoInicio)
+         if(indiceFin == -1){
+           var x:Double=0
+           var y:Double=0
+            via.angulo match{
+             case 90.0=> {x=via.fin.x;y=via.fin.y-10}
+             case -90.0=> {x=via.fin.x;y=via.fin.y+10}
+             case ang =>if(ang>90){x=via.fin.x+10;y=(via.fin.x+10)*math.tan(via.angulo)} else {x=via.fin.x-10;y=(via.fin.x-10)*math.tan(via.angulo)}
+            }
+           val semaforoFin=Semaforo(x,y,EstadoVerde,via)
+         }
+         if(indiceInicio == -1){
+           var x:Double=0
+           var y:Double=0
+            via.angulo match{
+             case 90.0=> {x=via.origen.x;y=via.origen.y+10}
+             case -90.0=> {x=via.origen.x;y=via.origen.y-10}
+             case ang =>if(ang>90){x=via.origen.x-10;y=(via.origen.x-10)*math.tan(via.angulo)} else {x=via.origen.x+10;y=(via.origen.x+10)*math.tan(via.angulo)}
+            }
+           val semaforoFin=Semaforo(x,y,EstadoVerde,via)
+         }
+       }
+     }
+    }
+    listaVias.foreach(cargarSemaforosVia)
     grafo.construir(vias)
     val grafico = Grafico
     grafico.iniciarGrafico(vias)
