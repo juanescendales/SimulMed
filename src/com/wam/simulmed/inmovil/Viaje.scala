@@ -36,7 +36,7 @@ class Viaje(val vehiculo: Vehiculo, val recorrido: Queue[Via], val interseccione
 
       if (distanciaDelCarroALaInterseccion <= Simulacion.XSemaforoFrenar && !vehiculo.aceleracion.frenando) {
         vehiculo.aceleracion.frenando = true
-
+        println("entrta")
         //el XSemaforoFrenar hay que mirarlo para cuadrar bien que distancia es, si la de amarillo o la de rojo(en la linea de abajo)
         vehiculo.aceleracion.magnitud_=(-1 * (1 / Simulacion.XSemaforoFrenar) * (math.pow(vehiculo.velocidad.magnitud, 2) / 2))
       }
@@ -89,7 +89,7 @@ object Viaje {
     val viasRecorrido = Viaje.toQueue(viasRecorridoCompleto)
     val viaInicial = viasRecorrido.head
     val magnitudVelocidadAleatoria = Velocidad.conversorKmHorAMetroSeg((r.nextDouble() * (Simulacion.maxVelocidad - Simulacion.minVelocidad)) + Simulacion.minVelocidad)
-    val magnitudAceleracionAleatoria = (r.nextDouble() * (Simulacion.maxAceleracion - Simulacion.minAceleracion)) + Simulacion.minAceleracion
+    val magnitudAceleracionAleatoria = Velocidad.conversorKmHorAMetroSeg((r.nextDouble() * (Simulacion.maxAceleracion - Simulacion.minAceleracion)) + Simulacion.minAceleracion)
     interseccionesRecorrido.dequeue()
     val interseccionInicial = interseccionesRecorrido.head
     val puntoOrigen = new Punto(origen.x, origen.y)
