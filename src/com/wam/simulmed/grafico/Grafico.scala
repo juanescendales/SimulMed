@@ -106,7 +106,7 @@ object Grafico{
     intersecciones.foreach(interseccion=>{
       val colorHex=randomHex()
       this.renderer.setSeriesPaint(this.dataset.getSeriesCount,Color.decode(colorHex))
-      val label: XYTextAnnotation = new XYTextAnnotation(interseccion.nombre,interseccion.xi, interseccion.yi+(350)*((random.nextFloat()*2).round-1))
+      val label: XYTextAnnotation = new XYTextAnnotation(interseccion.nombre.getOrElse(""),interseccion.xi, interseccion.yi+(350)*((random.nextFloat()*2).round-1))
     	label.setPaint(Color.decode(colorHex))
     	plot.addAnnotation(label)
     	this.coloresIntersecciones+=(interseccion->colorHex)
