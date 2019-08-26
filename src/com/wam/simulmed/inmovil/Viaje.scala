@@ -26,19 +26,19 @@ class Viaje(val vehiculo: Vehiculo, val recorrido: Queue[Via], val interseccione
       val margenError = (vehiculo.velocidad.velocidadTotalMagnitud * dt) + 5
       val distanciaDelCarroALaInterseccion = Punto.distanciaEntre2Puntos(interseccionDestino, vehiculo.posicion)
       if (viaActual.camaraDeFotoDeteccion.isDefined) {
-
         val distanciaCarroCamara = Punto.distanciaEntre2Puntos(vehiculo.posicion, viaActual.camaraDeFotoDeteccion.get.posicion)
         if (distanciaCarroCamara <= margenError) {
           CamaraFotoDeteccion.verificarVelocidad(vehiculo, viaActual)
         }
-
       }
+
       //hay que verificar
 
       if (distanciaDelCarroALaInterseccion <= Simulacion.XSemaforoFrenar && !vehiculo.aceleracion.frenando) {
         vehiculo.aceleracion.frenando = true
+
+        //el XSemaforoFrenar hay que mirarlo para cuadrar bien que distancia es, si la de amarillo o la de rojo(en la linea de abajo)
         vehiculo.aceleracion.magnitud_=(-1 * (1 / Simulacion.XSemaforoFrenar) * (math.pow(vehiculo.velocidad.magnitud, 2) / 2))
-        //println(vehiculo.aceleracion.magnitud)
       }
 
       if (vehiculo.posicion.x > xViaFin - margenError && vehiculo.posicion.x < xViaFin + margenError && vehiculo.posicion.y > yViaFin - margenError && vehiculo.posicion.y < yViaFin + margenError) {

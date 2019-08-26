@@ -20,11 +20,14 @@ object Simulacion extends Runnable {
   val maxVehiculos = parametros.pametrosSimulacion.vehiculos.maximo
   val minVelocidad: Double = parametros.pametrosSimulacion.velocidad.minimo
   val maxVelocidad: Double = parametros.pametrosSimulacion.velocidad.maximo
-  //aspectos de aceleracion que hay que meter en el json
-  val minAceleracion: Double = 5.0
-  val maxAceleracion: Double = 20.0
-  val XSemaforoFrenar: Double = 500
-  //FIN
+  val minAceleracion: Double = parametros.pametrosSimulacion.aceleración.mínimo
+  val maxAceleracion: Double = parametros.pametrosSimulacion.aceleración.máximo
+  val XSemaforoFrenar: Double = parametros.pametrosSimulacion.distanciasFrenadoVehiculos.XSemaforoFrenar
+  val XSemaforoAmarilloContinuar: Double = parametros.pametrosSimulacion.distanciasFrenadoVehiculos.XSemaforoAmarilloContinuar
+  val minTiempoVerde: Double = parametros.pametrosSimulacion.semaforos.minTiempoVerde
+  val maxTiempoVerde: Double = parametros.pametrosSimulacion.semaforos.maxTiempoVerde
+  val tiempoAmarillo: Double = parametros.pametrosSimulacion.semaforos.tiempoAmarillo
+
   val totalVehiculos = (((new scala.util.Random).nextDouble() * (Simulacion.maxVehiculos - Simulacion.minVehiculos)) + Simulacion.minVehiculos).toInt
 
   var listaVias = ArrayBuffer.empty[Via]
@@ -100,6 +103,9 @@ object Simulacion extends Runnable {
     val v8 = new Via(agua, santafe, 60, TipoVia("Calle"), Sentido.dobleVia, "12S", Some("80"))
     val cam8 = new CamaraFotoDeteccion(v8)
     v8.camaraDeFotoDeteccion = Some(cam8)
+    val v9 = new Via(_30_80, _65_80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", Some("80"))
+    val cam9 = new CamaraFotoDeteccion(v9)
+    v9.camaraDeFotoDeteccion = Some(cam9)
 
     val vias = ArrayBuffer(
       new Via(niquia, lauraAuto, 80, TipoVia("Carrera"), Sentido.dobleVia, "64C", Some("Auto Norte")),
@@ -167,7 +173,9 @@ object Simulacion extends Runnable {
       new Via(col80, juan80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", Some("80")),
       new Via(juan80, gema, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", Some("80")),
       new Via(gema, _30_80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", Some("80")),
-      new Via(_30_80, _65_80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", Some("80")),
+      
+      v9,
+      
       new Via(_65_80, gu80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", Some("80")),
       new Via(gu80, agua, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", Some("80")),
       v8,
@@ -243,6 +251,7 @@ object Simulacion extends Runnable {
     Grafico.borrarVehiculos(Viaje.listaDeVehiculosSimulacion ++ Viaje.listaDeVehiculosSimulacionDetenidos)
     Viaje.listaDeVehiculosSimulacion.clear()
     Viaje.listaDeVehiculosSimulacionDetenidos.clear()
+    Comparendo.listaComparendos.clear()
     Simulacion.t = 0
   }
 
@@ -269,7 +278,6 @@ object Simulacion extends Runnable {
     //Calculos Finales
     if (Simulacion.running) {
       //calculoDeResultados(Viaje.listaDeVehiculosSimulacionParaCalculos)   DESCOMENTAR LUEGO, SON LOS RESULTADOS
-      println(Comparendo.listaComparendos.map(_.velocidadVehiculo))
     }
 
     //Fin Calculos Finales
