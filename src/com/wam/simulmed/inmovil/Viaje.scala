@@ -1,6 +1,5 @@
 package com.wam.simulmed.inmovil
-import com.wam.simulmed.ciudad.Via
-import com.wam.simulmed.ciudad.Interseccion
+import com.wam.simulmed.ciudad._
 import com.wam.simulmed.movil.Vehiculo
 import com.wam.simulmed.grafico.Grafico
 import scala.collection.mutable.Queue
@@ -26,9 +25,16 @@ class Viaje(val vehiculo: Vehiculo, val recorrido: Queue[Via], val interseccione
       val yViaFin = interseccionDestino.y
       val margenError = (vehiculo.velocidad.velocidadTotalMagnitud * dt) + 5
       val distanciaDelCarroALaInterseccion = Punto.distanciaEntre2Puntos(interseccionDestino, vehiculo.posicion)
-      
-      //hay que verificar 
-      
+      if (viaActual.camaraDeFotoDeteccion.isDefined) {
+
+        val distanciaCarroCamara = Punto.distanciaEntre2Puntos(vehiculo.posicion, viaActual.camaraDeFotoDeteccion.get.posicion)
+        if (distanciaCarroCamara <= margenError) {
+          CamaraFotoDeteccion.verificarVelocidad(vehiculo, viaActual)
+        }
+
+      }
+      //hay que verificar
+
       if (distanciaDelCarroALaInterseccion <= Simulacion.XSemaforoFrenar && !vehiculo.aceleracion.frenando) {
         vehiculo.aceleracion.frenando = true
         vehiculo.aceleracion.magnitud_=(-1 * (1 / Simulacion.XSemaforoFrenar) * (math.pow(vehiculo.velocidad.magnitud, 2) / 2))

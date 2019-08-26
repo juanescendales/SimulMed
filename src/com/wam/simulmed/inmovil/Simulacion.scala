@@ -77,28 +77,28 @@ object Simulacion extends Runnable {
     //creacion de vias con camaras de fotodeteccion
 
     val v1 = new Via(mino, villa, 60, TipoVia("Calle"), Sentido.dobleVia, "58", Some("Oriental"))
-    val cam1 = new CamaraFotoDeteccion(v1.distancia / 2)
+    val cam1 = new CamaraFotoDeteccion(v1)
     v1.camaraDeFotoDeteccion = Some(cam1)
     val v2 = new Via(viva, mayor, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", Some("Regional"))
-    val cam2 = new CamaraFotoDeteccion(v2.distancia / 2)
+    val cam2 = new CamaraFotoDeteccion(v2)
     v2.camaraDeFotoDeteccion = Some(cam2)
     val v3 = new Via(ferrCol, colReg, 60, TipoVia("Calle"), Sentido.dobleVia, "450", Some("Colombia"))
-    val cam3 = new CamaraFotoDeteccion(v3.distancia / 2)
+    val cam3 = new CamaraFotoDeteccion(v3)
     v3.camaraDeFotoDeteccion = Some(cam3)
     val v4 = new Via(_33_65, bule, 60, TipoVia("Calle"), Sentido.dobleVia, "33", Some("33"))
-    val cam4 = new CamaraFotoDeteccion(v4.distancia / 2)
+    val cam4 = new CamaraFotoDeteccion(v4)
     v4.camaraDeFotoDeteccion = Some(cam4)
     val v5 = new Via(maca, bol65, 60, TipoVia("Diagonal"), Sentido.dobleVia, "74B", Some("Boliv"))
-    val cam5 = new CamaraFotoDeteccion(v5.distancia / 2)
+    val cam5 = new CamaraFotoDeteccion(v5)
     v5.camaraDeFotoDeteccion = Some(cam5)
     val v6 = new Via(_33_65, bol65, 60, TipoVia("Carrera"), Sentido.unaVia, "65", Some("65"))
-    val cam6 = new CamaraFotoDeteccion(v6.distancia / 2)
+    val cam6 = new CamaraFotoDeteccion(v6)
     v6.camaraDeFotoDeteccion = Some(cam6)
     val v7 = new Via(robledo, col80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", Some("80"))
-    val cam7 = new CamaraFotoDeteccion(v7.distancia / 2)
+    val cam7 = new CamaraFotoDeteccion(v7)
     v7.camaraDeFotoDeteccion = Some(cam7)
     val v8 = new Via(agua, santafe, 60, TipoVia("Calle"), Sentido.dobleVia, "12S", Some("80"))
-    val cam8 = new CamaraFotoDeteccion(v8.distancia / 2)
+    val cam8 = new CamaraFotoDeteccion(v8)
     v8.camaraDeFotoDeteccion = Some(cam8)
 
     val vias = ArrayBuffer(
@@ -269,6 +269,7 @@ object Simulacion extends Runnable {
     //Calculos Finales
     if (Simulacion.running) {
       //calculoDeResultados(Viaje.listaDeVehiculosSimulacionParaCalculos)   DESCOMENTAR LUEGO, SON LOS RESULTADOS
+      println(Comparendo.listaComparendos.map(_.velocidadVehiculo))
     }
 
     //Fin Calculos Finales
