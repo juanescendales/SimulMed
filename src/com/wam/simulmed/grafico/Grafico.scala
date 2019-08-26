@@ -89,6 +89,14 @@ object Grafico{
       val nuevaVia: XYSeries  = new XYSeries(via.nombre+"-"+via.origen.nombre+"-"+via.fin.nombre)
     	nuevaVia.add(via.origen.xi, via.origen.yi)
     	nuevaVia.add(via.fin.xi, via.fin.yi)
+    	if(via.camaraDeFotoDeteccion.isDefined){
+    	  val camara: XYSeries = new XYSeries("camara-"+via.nombre+"-"+via.origen.nombre+"-"+via.fin.nombre)
+    	  val posicion=via.camaraDeFotoDeteccion.get.posicion
+    	  camara.add(posicion.x, posicion.y)
+    	  this.dataset.addSeries(camara)
+    	  this.renderer.setSeriesShape(this.dataset.getSeriesCount-1, new Rectangle(-4,-4,4,4))
+    	  this.renderer.setSeriesPaint(this.dataset.getSeriesCount-1,Color.blue)
+    	}
       this.dataset.addSeries(nuevaVia)
       renderer.setSeriesShapesVisible(dataset.getSeriesCount-1, false)
     })
