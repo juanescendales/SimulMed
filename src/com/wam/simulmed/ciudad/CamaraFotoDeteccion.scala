@@ -1,5 +1,5 @@
 package com.wam.simulmed.ciudad
 
-class CamaraFotoDeteccion(private val distancia: Double) {
+class CamaraFotoDeteccion(private val distanciaAVia: Double) {
   
 }

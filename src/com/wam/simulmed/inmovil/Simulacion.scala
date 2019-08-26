@@ -74,7 +74,35 @@ object Simulacion extends Runnable {
     val gu80 = new Interseccion(19500, 12000, "Guay 80")
     val _65_80 = new Interseccion(19500, 10500, "65 con 30")
     val gu_37S = new Interseccion(21000, 12000, "Guay con 37S")
-
+    //creacion de vias con camaras de fotodeteccion
+    
+    
+    val v1 = new Via(mino, villa, 60, TipoVia("Calle"), Sentido.dobleVia, "58", Some("Oriental"))
+    val cam1 = new CamaraFotoDeteccion(v1.distancia/2)
+    v1.camaraDeFotoDeteccion = Some(cam1)
+    val v2 = new Via(viva, mayor, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", Some("Regional"))
+    val cam2 = new CamaraFotoDeteccion(v2.distancia/2)
+    v2.camaraDeFotoDeteccion = Some(cam2)
+    val v3 = new Via(ferrCol, colReg, 60, TipoVia("Calle"), Sentido.dobleVia, "450", Some("Colombia"))
+    val cam3 = new CamaraFotoDeteccion(v3.distancia/2)
+    v3.camaraDeFotoDeteccion = Some(cam3)
+    val v4 = new Via(_33_65, bule, 60, TipoVia("Calle"), Sentido.dobleVia, "33", Some("33"))
+    val cam4 = new CamaraFotoDeteccion(v4.distancia/2)
+    v4.camaraDeFotoDeteccion = Some(cam4)
+    val v5 = new Via(maca, bol65, 60, TipoVia("Diagonal"), Sentido.dobleVia, "74B", Some("Boliv"))
+    val cam5 = new CamaraFotoDeteccion(v5.distancia/2)
+    v5.camaraDeFotoDeteccion = Some(cam5)
+    val v6 = new Via(_33_65, bol65, 60, TipoVia("Carrera"), Sentido.unaVia, "65", Some("65"))
+    val cam6 = new CamaraFotoDeteccion(v6.distancia/2)
+    v6.camaraDeFotoDeteccion = Some(cam6)
+    val v7 = new Via(robledo, col80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", Some("80"))
+    val cam7 = new CamaraFotoDeteccion(v7.distancia/2)
+    v7.camaraDeFotoDeteccion = Some(cam7)
+    val v8 = new Via(agua, santafe, 60, TipoVia("Calle"), Sentido.dobleVia, "12S", Some("80"))
+    val cam8 = new CamaraFotoDeteccion(v8.distancia/2)
+    v8.camaraDeFotoDeteccion = Some(cam8)
+    
+    
     val vias = ArrayBuffer(
       new Via(niquia, lauraAuto, 80, TipoVia("Carrera"), Sentido.dobleVia, "64C", Some("Auto Norte")),
       new Via(niquia, lauraReg, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", Some("Regional")),
@@ -82,7 +110,9 @@ object Simulacion extends Runnable {
       new Via(lauraAuto, ptoCero, 80, TipoVia("Carrera"), Sentido.dobleVia, "64C", Some("Auto Norte")),
       new Via(lauraReg, ptoCero, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", Some("Regional")),
       new Via(ptoCero, mino, 60, TipoVia("Calle"), Sentido.dobleVia, "58", Some("Oriental")),
+      
       new Via(mino, villa, 60, TipoVia("Calle"), Sentido.dobleVia, "58", Some("Oriental")),
+      
       new Via(ptoCero, ig65, 60, TipoVia("Calle"), Sentido.dobleVia, "55", Some("Iguaná")),
       new Via(ig65, robledo, 60, TipoVia("Calle"), Sentido.dobleVia, "55", Some("Iguaná")),
       new Via(ptoCero, colReg, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", Some("Regional")),
@@ -92,7 +122,9 @@ object Simulacion extends Runnable {
       new Via(reg30, monte, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", Some("Regional")),
       new Via(monte, agua, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", Some("Regional")),
       new Via(agua, viva, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", Some("Regional")),
+      
       new Via(viva, mayor, 80, TipoVia("Carrera"), Sentido.dobleVia, "62", Some("Regional")),
+      
       new Via(mino, ferrCol, 60, TipoVia("Carrera"), Sentido.dobleVia, "55", Some("Ferrocarril")),
       new Via(ferrCol, ferrJuan, 60, TipoVia("Carrera"), Sentido.dobleVia, "55", Some("Ferrocarril")),
       new Via(ferrJuan, expo, 60, TipoVia("Carrera"), Sentido.dobleVia, "55", Some("Ferrocarril")),
@@ -103,7 +135,9 @@ object Simulacion extends Runnable {
       new Via(pp, santafe, 60, TipoVia("Carrera"), Sentido.dobleVia, "43A", Some("Av Pob")),
       new Via(santafe, pqEnv, 60, TipoVia("Carrera"), Sentido.dobleVia, "43A", Some("Av Pob")),
       new Via(pqEnv, mayor, 60, TipoVia("Carrera"), Sentido.dobleVia, "43A", Some("Av Pob")),
+      
       new Via(ferrCol, colReg, 60, TipoVia("Calle"), Sentido.dobleVia, "450", Some("Colombia")),
+      
       new Via(colReg, col65, 60, TipoVia("Calle"), Sentido.dobleVia, "450", Some("Colombia")),
       new Via(col65, col80, 60, TipoVia("Calle"), Sentido.dobleVia, "450", Some("Colombia")),
       new Via(juanOr, ferrJuan, 60, TipoVia("Calle"), Sentido.dobleVia, "44", Some("Sn Juan")),
@@ -112,13 +146,17 @@ object Simulacion extends Runnable {
       new Via(juan65, juan80, 60, TipoVia("Calle"), Sentido.dobleVia, "44", Some("Sn Juan")),
       new Via(sanDiego, expo, 60, TipoVia("Calle"), Sentido.dobleVia, "33", Some("33")),
       new Via(expo, _33_65, 60, TipoVia("Calle"), Sentido.dobleVia, "33", Some("33")),
+      
       new Via(_33_65, bule, 60, TipoVia("Calle"), Sentido.dobleVia, "33", Some("33")),
+      
       new Via(bule, gema, 60, TipoVia("Calle"), Sentido.dobleVia, "33", Some("33")),
       new Via(premium, reg30, 60, TipoVia("Calle"), Sentido.dobleVia, "30", Some("30")),
       new Via(reg30, _30_65, 60, TipoVia("Calle"), Sentido.dobleVia, "30", Some("30")),
       new Via(_30_65, _30_70, 60, TipoVia("Calle"), Sentido.dobleVia, "30", Some("30")),
       new Via(_30_70, _30_80, 60, TipoVia("Calle"), Sentido.dobleVia, "30", Some("30")),
+      
       new Via(maca, bol65, 60, TipoVia("Diagonal"), Sentido.dobleVia, "74B", Some("Boliv")),
+      
       new Via(bol65, bule, 60, TipoVia("Diagonal"), Sentido.dobleVia, "74B", Some("Boliv")),
       new Via(bule, _30_70, 60, TipoVia("Diagonal"), Sentido.dobleVia, "74B", Some("Boliv")),
       new Via(juan80, bule, 60, TipoVia("Transversal"), Sentido.dobleVia, "39B", Some("Nutibara")),
@@ -133,66 +171,72 @@ object Simulacion extends Runnable {
       new Via(ig65, col65, 60, TipoVia("Carrera"), Sentido.dobleVia, "65", Some("65")),
       new Via(juan65, col65, 60, TipoVia("Carrera"), Sentido.unaVia, "65", Some("65")),
       new Via(bol65, juan65, 60, TipoVia("Carrera"), Sentido.unaVia, "65", Some("65")),
+      
       new Via(_33_65, bol65, 60, TipoVia("Carrera"), Sentido.unaVia, "65", Some("65")),
+      
       new Via(_30_65, _33_65, 60, TipoVia("Carrera"), Sentido.unaVia, "65", Some("65")),
       new Via(_30_65, terminal, 60, TipoVia("Carrera"), Sentido.dobleVia, "65", Some("65")),
       new Via(terminal, _65_80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", Some("65")),
+      
       new Via(robledo, col80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", Some("80")),
+      
       new Via(col80, juan80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", Some("80")),
       new Via(juan80, gema, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", Some("80")),
       new Via(gema, _30_80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", Some("80")),
       new Via(_30_80, _65_80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", Some("80")),
       new Via(_65_80, gu80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", Some("80")),
       new Via(gu80, agua, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", Some("80")),
+      
       new Via(agua, santafe, 60, TipoVia("Calle"), Sentido.dobleVia, "12S", Some("80")),
+      
       new Via(viva, pqEnv, 60, TipoVia("Calle"), Sentido.dobleVia, "37S", Some("37S")),
       new Via(viva, gu_37S, 60, TipoVia("Calle"), Sentido.dobleVia, "63", Some("37S")))
     listaVias = vias
-    
-    var nodosSemaforos=ArrayBuffer[NodoSemaforo]()
-    def cargarSemaforosVia(via:Via)={
-     val nodoInicio = NodoSemaforo(via.origen)()
-     val nodoFin = NodoSemaforo(via.fin)()
-     via.sentido match{
-       case Sentido("Un sentido")=>{
-         val indice=nodosSemaforos.indexOf(nodoFin)
-         if(indice == -1){
-           var x:Double=0
-           var y:Double=0
-            via.angulo match{
-             case 90.0=> {x=via.fin.x;y=via.fin.y-10}
-             case -90.0=> {x=via.fin.x;y=via.fin.y+10}
-             case ang =>if(ang>90){x=via.fin.x+10;y=(via.fin.x+10)*math.tan(via.angulo)} else {x=via.fin.x-10;y=(via.fin.x-10)*math.tan(via.angulo)}
+
+    var nodosSemaforos = ArrayBuffer[NodoSemaforo]()
+    def cargarSemaforosVia(via: Via) = {
+      val nodoInicio = NodoSemaforo(via.origen)()
+      val nodoFin = NodoSemaforo(via.fin)()
+      via.sentido match {
+        case Sentido("Un sentido") => {
+          val indice = nodosSemaforos.indexOf(nodoFin)
+          if (indice == -1) {
+            var x: Double = 0
+            var y: Double = 0
+            via.angulo match {
+              case 90.0  => { x = via.fin.x; y = via.fin.y - 10 }
+              case -90.0 => { x = via.fin.x; y = via.fin.y + 10 }
+              case ang   => if (ang > 90) { x = via.fin.x + 10; y = (via.fin.x + 10) * math.tan(via.angulo) } else { x = via.fin.x - 10; y = (via.fin.x - 10) * math.tan(via.angulo) }
             }
-           val semaforoFin=Semaforo(x,y,EstadoVerde,via)
-           
-         }
-       }
-       case Sentido("Doble via")=>{
-         val indiceFin=nodosSemaforos.indexOf(nodoFin)
-         val indiceInicio=nodosSemaforos.indexOf(nodoInicio)
-         if(indiceFin == -1){
-           var x:Double=0
-           var y:Double=0
-            via.angulo match{
-             case 90.0=> {x=via.fin.x;y=via.fin.y-10}
-             case -90.0=> {x=via.fin.x;y=via.fin.y+10}
-             case ang =>if(ang>90){x=via.fin.x+10;y=(via.fin.x+10)*math.tan(via.angulo)} else {x=via.fin.x-10;y=(via.fin.x-10)*math.tan(via.angulo)}
+            val semaforoFin = Semaforo(x, y, EstadoVerde, via)
+
+          }
+        }
+        case Sentido("Doble via") => {
+          val indiceFin = nodosSemaforos.indexOf(nodoFin)
+          val indiceInicio = nodosSemaforos.indexOf(nodoInicio)
+          if (indiceFin == -1) {
+            var x: Double = 0
+            var y: Double = 0
+            via.angulo match {
+              case 90.0  => { x = via.fin.x; y = via.fin.y - 10 }
+              case -90.0 => { x = via.fin.x; y = via.fin.y + 10 }
+              case ang   => if (ang > 90) { x = via.fin.x + 10; y = (via.fin.x + 10) * math.tan(via.angulo) } else { x = via.fin.x - 10; y = (via.fin.x - 10) * math.tan(via.angulo) }
             }
-           val semaforoFin=Semaforo(x,y,EstadoVerde,via)
-         }
-         if(indiceInicio == -1){
-           var x:Double=0
-           var y:Double=0
-            via.angulo match{
-             case 90.0=> {x=via.origen.x;y=via.origen.y+10}
-             case -90.0=> {x=via.origen.x;y=via.origen.y-10}
-             case ang =>if(ang>90){x=via.origen.x-10;y=(via.origen.x-10)*math.tan(via.angulo)} else {x=via.origen.x+10;y=(via.origen.x+10)*math.tan(via.angulo)}
+            val semaforoFin = Semaforo(x, y, EstadoVerde, via)
+          }
+          if (indiceInicio == -1) {
+            var x: Double = 0
+            var y: Double = 0
+            via.angulo match {
+              case 90.0  => { x = via.origen.x; y = via.origen.y + 10 }
+              case -90.0 => { x = via.origen.x; y = via.origen.y - 10 }
+              case ang   => if (ang > 90) { x = via.origen.x - 10; y = (via.origen.x - 10) * math.tan(via.angulo) } else { x = via.origen.x + 10; y = (via.origen.x + 10) * math.tan(via.angulo) }
             }
-           val semaforoFin=Semaforo(x,y,EstadoVerde,via)
-         }
-       }
-     }
+            val semaforoFin = Semaforo(x, y, EstadoVerde, via)
+          }
+        }
+      }
     }
     listaVias.foreach(cargarSemaforosVia)
     grafo.construir(vias)
@@ -249,7 +293,7 @@ object Simulacion extends Runnable {
 
   }
   def calculoDeResultados(listaDeVehiculosSimulacionParaCalculos: ArrayBuffer[Viaje]): Unit = {
-    
+
     val totalVehiculos = listaDeVehiculosSimulacionParaCalculos.length
     val totalCarros = listaDeVehiculosSimulacionParaCalculos.filter(_.vehiculo.isInstanceOf[Carro]).length
     val totalMotos = listaDeVehiculosSimulacionParaCalculos.filter(_.vehiculo.isInstanceOf[Moto]).length
