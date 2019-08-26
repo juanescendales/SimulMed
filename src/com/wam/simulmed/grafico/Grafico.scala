@@ -44,7 +44,7 @@ object Grafico{
   punto1.add(0, 0)
   dataset.addSeries(punto1)
   
-  def iniciarGrafico(vias:ArrayBuffer[Via]){
+  def iniciarGrafico(vias:ArrayBuffer[Via],semaforos:ArrayBuffer[Semaforo]){
   	
     this.renderer.setAutoPopulateSeriesStroke(false)
   	this.renderer.setAutoPopulateSeriesPaint(false)
@@ -53,6 +53,7 @@ object Grafico{
     this.renderer.setBasePaint(Color.decode("#cccccc"))
     
     cargarMapa(vias)
+    cargarSemaforos(semaforos)
     
     val xyScatterChart: JFreeChart = ChartFactory.createScatterPlot(
   	null, 
@@ -99,6 +100,21 @@ object Grafico{
     	}
       this.dataset.addSeries(nuevaVia)
       renderer.setSeriesShapesVisible(dataset.getSeriesCount-1, false)
+    })
+  }
+  
+  def cargarSemaforos(semaforos:ArrayBuffer[Semaforo]){
+    semaforos.foreach(semaforo=>{
+      val semaforoGrafico: XYSeries = new XYSeries(semaforo.id)
+      println(semaforo.x, semaforo.x)
+  	  semaforoGrafico.add(semaforo.x, semaforo.y)
+  	  this.dataset.addSeries(semaforoGrafico)
+  	  this.renderer.setSeriesShape(this.dataset.getSeriesCount-1, new Rectangle(-4,-4,4,4))
+  	  
+  	  semaforo.estado match{
+        case EstadoRojo => this.renderer.setSeriesPaint(this.dataset.getSeriesCount-1,Color.RED)
+        case EstadoVerde => this.renderer.setSeriesPaint(this.dataset.getSeriesCount-1,Color.GREEN)
+      }
     })
   }
   

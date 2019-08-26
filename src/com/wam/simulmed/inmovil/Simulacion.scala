@@ -184,6 +184,7 @@ object Simulacion extends Runnable {
     listaVias = vias
 
     var nodosSemaforos = ArrayBuffer[NodoSemaforo]()
+    var numeroSemaforos=0
     def cargarSemaforosVia(via: Via) = {
       val nodoInicio = NodoSemaforo(via.origen)()
       val nodoFin = NodoSemaforo(via.fin)()
@@ -191,39 +192,38 @@ object Simulacion extends Runnable {
         case Sentido("Un sentido") => {
           val indice = nodosSemaforos.indexOf(nodoFin)
           if (indice == -1) {
-            var x: Double = 0
-            var y: Double = 0
-            via.angulo match {
-              case 90.0  => { x = via.fin.x; y = via.fin.y - 10 }
-              case -90.0 => { x = via.fin.x; y = via.fin.y + 10 }
-              case ang   => if (ang > 90) { x = via.fin.x + 10; y = (via.fin.x + 10) * math.tan(via.angulo) } else { x = via.fin.x - 10; y = (via.fin.x - 10) * math.tan(via.angulo) }
-            }
-            val semaforoFin = Semaforo(x, y, EstadoVerde, via)
-
+            val semaforoFin = Semaforo(numeroSemaforos.toString(),EstadoVerde, via)
+            numeroSemaforos+=1
+            nodoFin.addSemaforo(semaforoFin)
+            nodosSemaforos+=nodoFin
+          }else{
+            val semaforoFin = Semaforo(numeroSemaforos.toString(),EstadoRojo, via)
+            numeroSemaforos+=1
+            nodosSemaforos(indice).addSemaforo(semaforoFin)
           }
         }
         case Sentido("Doble via") => {
           val indiceFin = nodosSemaforos.indexOf(nodoFin)
           val indiceInicio = nodosSemaforos.indexOf(nodoInicio)
           if (indiceFin == -1) {
-            var x: Double = 0
-            var y: Double = 0
-            via.angulo match {
-              case 90.0  => { x = via.fin.x; y = via.fin.y - 10 }
-              case -90.0 => { x = via.fin.x; y = via.fin.y + 10 }
-              case ang   => if (ang > 90) { x = via.fin.x + 10; y = (via.fin.x + 10) * math.tan(via.angulo) } else { x = via.fin.x - 10; y = (via.fin.x - 10) * math.tan(via.angulo) }
-            }
-            val semaforoFin = Semaforo(x, y, EstadoVerde, via)
+            val semaforoFin = Semaforo(numeroSemaforos.toString(),EstadoVerde, via)
+            numeroSemaforos+=1
+            nodoFin.addSemaforo(semaforoFin)
+            nodosSemaforos+=nodoFin
+          }else{
+            val semaforoFin = Semaforo(numeroSemaforos.toString(),EstadoRojo, via)
+            numeroSemaforos+=1
+            nodosSemaforos(indiceFin).addSemaforo(semaforoFin)
           }
           if (indiceInicio == -1) {
-            var x: Double = 0
-            var y: Double = 0
-            via.angulo match {
-              case 90.0  => { x = via.origen.x; y = via.origen.y + 10 }
-              case -90.0 => { x = via.origen.x; y = via.origen.y - 10 }
-              case ang   => if (ang > 90) { x = via.origen.x - 10; y = (via.origen.x - 10) * math.tan(via.angulo) } else { x = via.origen.x + 10; y = (via.origen.x + 10) * math.tan(via.angulo) }
-            }
-            val semaforoFin = Semaforo(x, y, EstadoVerde, via)
+            val semaforoInicio = Semaforo(numeroSemaforos.toString(),EstadoVerde, via,true)
+            numeroSemaforos+=1
+            nodoInicio.addSemaforo(semaforoInicio)
+            nodosSemaforos+=nodoInicio
+          }else{
+            val semaforoInicio = Semaforo(numeroSemaforos.toString(),EstadoRojo, via,true)
+            numeroSemaforos+=1
+            nodosSemaforos(indiceInicio).addSemaforo(semaforoInicio)
           }
         }
       }
@@ -231,7 +231,7 @@ object Simulacion extends Runnable {
     listaVias.foreach(cargarSemaforosVia)
     grafo.construir(vias)
     val grafico = Grafico
-    grafico.iniciarGrafico(vias)
+    grafico.iniciarGrafico(vias,nodosSemaforos.map(_.getSemaforos()).flatten)
 
   }
   def start() {

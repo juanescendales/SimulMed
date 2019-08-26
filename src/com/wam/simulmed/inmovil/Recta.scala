@@ -5,6 +5,7 @@ trait Recta {
   val origen: T
   val fin: T
   val angulo = math.atan(math.abs(fin.y - origen.y) / math.abs(fin.x - origen.x)).toDegrees
+  val anguloPolar =  math.atan2(fin.y - origen.y,fin.x - origen.x).toDegrees 
 }
 object Recta {
   // Metodo que retorna el x y y de la parametrizacion del segmento segun un t definido entre 0 y 1 (x , y)

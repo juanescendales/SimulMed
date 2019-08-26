@@ -4,6 +4,7 @@ import scala.collection.mutable.Queue
 
 case class NodoSemaforo(interseccion:Interseccion)(semaforos:Queue[Semaforo]=Queue[Semaforo]()){
   def addSemaforo(semaforo:Semaforo)=semaforos.enqueue(semaforo)
+  def getSemaforos()=semaforos.toArray
   def getProximo():Semaforo={
     val semaforo=semaforos.dequeue()
     semaforos.enqueue(semaforo)
