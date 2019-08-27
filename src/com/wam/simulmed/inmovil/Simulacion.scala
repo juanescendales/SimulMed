@@ -13,6 +13,7 @@ object Simulacion extends Runnable {
   val parametros = jsonAdmin.leerDatosIniciales(ruta + "parametros.json")
   var running = false
   val grafo = GrafoVias
+  var ts:Double=0
   var t: Double = 0
   var dt: Double = parametros.pametrosSimulacion.dt
   val tRefresh = parametros.pametrosSimulacion.tRefresh
@@ -30,7 +31,9 @@ object Simulacion extends Runnable {
 
   val totalVehiculos = (((new scala.util.Random).nextDouble() * (Simulacion.maxVehiculos - Simulacion.minVehiculos)) + Simulacion.minVehiculos).toInt
 
+  var estadoSemaforo:EstadoSemaforo=EstadoVerde
   var listaVias = ArrayBuffer.empty[Via]
+  var semaforos=ArrayBuffer.empty[Semaforo]
   var hilo: Thread = _ //new Thread(Simulacion)
 
   def cargar() {
@@ -229,9 +232,10 @@ object Simulacion extends Runnable {
       }
     }
     listaVias.foreach(cargarSemaforosVia)
+    semaforos=nodosSemaforos.map(_.getSemaforos()).flatten
     grafo.construir(vias)
     val grafico = Grafico
-    grafico.iniciarGrafico(vias,nodosSemaforos.map(_.getSemaforos()).flatten)
+    grafico.iniciarGrafico(vias,semaforos)
 
   }
   def start() {
@@ -263,6 +267,13 @@ object Simulacion extends Runnable {
 
     while (!Viaje.listaDeVehiculosSimulacion.isEmpty && Simulacion.running) {
       val grafico = Grafico
+      Simulacion.ts+=Simulacion.dt
+      while(Simulacion.ts>=Simulacion.estadoSemaforo.getTiempo){
+        println(Simulacion.estadoSemaforo)
+        Simulacion.ts-=Simulacion.estadoSemaforo.getTiempo
+        Grafico.actualizarSemaforos(semaforos)
+        Simulacion.estadoSemaforo=Simulacion.estadoSemaforo.avanzarEstado(Simulacion.estadoSemaforo)
+      }
       Viaje.listaDeVehiculosSimulacion.foreach(vehiculo => {
         vehiculo.mover(Simulacion.dt)
         grafico.actualizarVehiculo(vehiculo)

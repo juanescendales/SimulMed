@@ -178,6 +178,23 @@ object Grafico{
     vehiculoGrafico.add(punto.x, punto.y)
   }
   
+  def actualizarSemaforos(semaforos:ArrayBuffer[Semaforo]){
+    semaforos.foreach(semaforo=>{
+      semaforo.estado=semaforo.estado.avanzarEstado(semaforo.estado)
+      val semaforoGrafico: XYSeries = this.dataset.getSeries(semaforo.id)
+      semaforoGrafico.clear()
+      semaforoGrafico.add(semaforo.interseccion.x, semaforo.interseccion.y)
+  	  semaforoGrafico.add(semaforo.x, semaforo.y)
+  	  this.renderer.setSeriesShape(semaforoGrafico.getItemCount, new Rectangle(-4,-4,4,4))
+  	  renderer.setSeriesShapesVisible(semaforoGrafico.getItemCount, false)
+  	  semaforo.estado match{
+        case EstadoRojo => this.renderer.setSeriesPaint(this.dataset.getSeriesCount-1,Color.RED)
+        case EstadoAmarillo => this.renderer.setSeriesPaint(this.dataset.getSeriesCount-1,Color.YELLOW)
+        case EstadoVerde => this.renderer.setSeriesPaint(this.dataset.getSeriesCount-1,Color.GREEN)
+      }
+    })
+  }
+  
   def randomHex():String={
       val random = new Random()
       var letters:Array[String] = "0123456789ABCDEF".split("")

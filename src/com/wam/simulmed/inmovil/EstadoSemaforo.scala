@@ -7,20 +7,20 @@ trait EstadoSemaforo{
       case EstadoRojo => EstadoVerde
       case EstadoVerde => EstadoAmarillo
     }
-  def getTiempo:Int
+  def getTiempo:Double
 }
 
 object EstadoAmarillo extends EstadoSemaforo{
-  private val tiempoAmarillo:Int=0
-  def getTiempo:Int=tiempoAmarillo
+  private val tiempoAmarillo:Double=5
+  def getTiempo:Double=tiempoAmarillo
 } 
 
 object EstadoVerde extends EstadoSemaforo{
-  val tiempoVerde:Int=0
-  def getTiempo:Int=tiempoVerde
+  val tiempoVerde:Double=50
+  def getTiempo:Double=tiempoVerde
 }
 
 object EstadoRojo extends EstadoSemaforo{
-  val tiempoRojo:Int=0
-  def getTiempo:Int=tiempoRojo
+  val tiempoRojo:Double=50
+  def getTiempo:Double=tiempoRojo
 }
