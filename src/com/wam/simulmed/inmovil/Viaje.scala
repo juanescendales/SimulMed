@@ -88,7 +88,6 @@ class Viaje(val vehiculo: Vehiculo, val recorrido: Queue[Via], val interseccione
         }
 
       }
-      println(vehiculo.velocidad.magnitud)
       //println(vehiculo.aceleracion.magnitud)
     }
   }

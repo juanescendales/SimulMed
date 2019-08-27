@@ -240,7 +240,7 @@ object Simulacion extends Runnable {
     grafo.construir(vias)
     val grafico = Grafico
     grafico.iniciarGrafico(vias,nodosSemaforos.map(_.getSemaforos()).flatten)
-
+ 
   }
   def start() {
     if (Simulacion.running) {
@@ -272,7 +272,6 @@ object Simulacion extends Runnable {
     while (!Viaje.listaDeVehiculosSimulacion.isEmpty && Simulacion.running) {
       val grafico = Grafico
       Simulacion.ts += Simulacion.dt
-      println(Simulacion.ts)
       while (Simulacion.ts >= Simulacion.estadoSemaforo.getTiempo) {
         Simulacion.ts-=Simulacion.estadoSemaforo.getTiempo
         Simulacion.estadoSemaforo=Simulacion.estadoSemaforo.avanzarEstado(Simulacion.estadoSemaforo)
