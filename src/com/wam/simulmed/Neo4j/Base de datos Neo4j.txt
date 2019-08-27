@@ -180,14 +180,26 @@ create (niquia:Interseccion{xi:300,yi:12000,nombre:"Niquia"}),
 ((gu80)-[:ES_ORIGEN]->(hu80agua)<-[:ES_FIN]-(agua)),
 ((agua)-[:ES_ORIGEN]->(v8)<-[:ES_FIN]-(santafe)),
 ((viva)-[:ES_ORIGEN]->(vivapqenv)<-[:ES_FIN]-(pqEnv)),
-((viva)-[:ES_ORIGEN]->(vivagu37s)<-[:ES_FIN]-(gu_37S))
-
-
-
-
-
-
-create (semaforo0:Semaforo {id:'semaforo0',xi:2015.3904209436707,yi:11509.888451158951, estado:'EstadoVerde'}), 
+((viva)-[:ES_ORIGEN]->(vivagu37s)<-[:ES_FIN]-(gu_37S)),
+(cam1:CamaraFotoDeteccion{id:"Cámara 1"}),
+(cam2:CamaraFotoDeteccion{id:"Cámara 2"}),
+(cam3:CamaraFotoDeteccion{id:"Cámara 3"}),
+(cam4:CamaraFotoDeteccion{id:"Cámara 4"}),
+(cam5:CamaraFotoDeteccion{id:"Cámara 5"}),
+(cam6:CamaraFotoDeteccion{id:"Cámara 6"}),
+(cam7:CamaraFotoDeteccion{id:"Cámara 7"}),
+(cam8:CamaraFotoDeteccion{id:"Cámara 8"}),
+(cam9:CamaraFotoDeteccion{id:"Cámara 9"}),
+((v1)-[:VIGILADA_POR]->(cam1)),
+((v2)-[:VIGILADA_POR]->(cam2)),
+((v3)-[:VIGILADA_POR]->(cam3)),
+((v4)-[:VIGILADA_POR]->(cam4)),
+((v5)-[:VIGILADA_POR]->(cam5)),
+((v6)-[:VIGILADA_POR]->(cam6)),
+((v7)-[:VIGILADA_POR]->(cam7)),
+((v8)-[:VIGILADA_POR]->(cam8)),
+((v9)-[:VIGILADA_POR]->(cam9))
+(semaforo0:Semaforo {id:'semaforo0',xi:2015.3904209436707,yi:11509.888451158951, estado:'EstadoVerde'}), 
 (semaforo5:Semaforo {id:'semaforo5',xi:2400.0,yi:11600.0, estado:'EstadoRojo'}), 
 (semaforo7:Semaforo {id:'semaforo7',xi:2596.1161351381843,yi:11439.223227027636, estado:'EstadoRojo'}), 
 (semaforo107:Semaforo {id:'semaforo107',xi:2591.5652570442303,yi:11342.530422886732, estado:'EstadoRojo'}), 
