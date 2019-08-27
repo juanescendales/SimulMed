@@ -1,7 +1,7 @@
 {
 	"pametrosSimulacion": {
 		"dt": 1,
-		"tRefresh": 100,
+		"tRefresh": 10,
 		"vehiculos": {
 			"minimo": 1,
 			"maximo": 2
