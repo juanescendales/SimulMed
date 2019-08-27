@@ -18,13 +18,13 @@ object EstadoAmarillo extends EstadoSemaforo{
 } 
 
 object EstadoVerde extends EstadoSemaforo{
-  val tiempoVerde:Double=50
+  val tiempoVerde:Double=40
   val distanciaFrenado:Double=EstadoRojo.distanciaFrenado*2
   def getTiempo:Double=tiempoVerde
 }
 
 object EstadoRojo extends EstadoSemaforo{
-  val tiempoRojo:Double=50
+  val tiempoRojo:Double=40
   val distanciaFrenado:Double=200
   def getTiempo:Double=tiempoRojo
 }

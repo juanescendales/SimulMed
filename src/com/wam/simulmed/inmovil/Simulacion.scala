@@ -272,12 +272,12 @@ object Simulacion extends Runnable {
     while (!Viaje.listaDeVehiculosSimulacion.isEmpty && Simulacion.running) {
       val grafico = Grafico
       Simulacion.ts += Simulacion.dt
+      println(Simulacion.ts)
       while (Simulacion.ts >= Simulacion.estadoSemaforo.getTiempo) {
-        println(Simulacion.estadoSemaforo)
         Simulacion.ts-=Simulacion.estadoSemaforo.getTiempo
-        Grafico.actualizarSemaforos(this.nodosSemaforos)
         Simulacion.estadoSemaforo=Simulacion.estadoSemaforo.avanzarEstado(Simulacion.estadoSemaforo)
         if(Simulacion.estadoSemaforo==EstadoRojo) Simulacion.estadoSemaforo=Simulacion.estadoSemaforo.avanzarEstado(Simulacion.estadoSemaforo)
+        Grafico.actualizarSemaforos(this.nodosSemaforos)
       }
       Viaje.listaDeVehiculosSimulacion.foreach(vehiculo => {
         vehiculo.mover(Simulacion.dt)
