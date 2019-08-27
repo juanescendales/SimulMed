@@ -192,12 +192,12 @@ object Simulacion extends Runnable {
         case Sentido("Un sentido") => {
           val indice = nodosSemaforos.indexOf(nodoFin)
           if (indice == -1) {
-            val semaforoFin = Semaforo(numeroSemaforos.toString(),EstadoVerde, via)
+            val semaforoFin = Semaforo(numeroSemaforos.toString(),EstadoVerde, via,via.fin)
             numeroSemaforos+=1
             nodoFin.addSemaforo(semaforoFin)
             nodosSemaforos+=nodoFin
           }else{
-            val semaforoFin = Semaforo(numeroSemaforos.toString(),EstadoRojo, via)
+            val semaforoFin = Semaforo(numeroSemaforos.toString(),EstadoRojo, via,via.fin)
             numeroSemaforos+=1
             nodosSemaforos(indice).addSemaforo(semaforoFin)
           }
@@ -206,22 +206,22 @@ object Simulacion extends Runnable {
           val indiceFin = nodosSemaforos.indexOf(nodoFin)
           val indiceInicio = nodosSemaforos.indexOf(nodoInicio)
           if (indiceFin == -1) {
-            val semaforoFin = Semaforo(numeroSemaforos.toString(),EstadoVerde, via)
+            val semaforoFin = Semaforo(numeroSemaforos.toString(),EstadoVerde, via,via.fin)
             numeroSemaforos+=1
             nodoFin.addSemaforo(semaforoFin)
             nodosSemaforos+=nodoFin
           }else{
-            val semaforoFin = Semaforo(numeroSemaforos.toString(),EstadoRojo, via)
+            val semaforoFin = Semaforo(numeroSemaforos.toString(),EstadoRojo, via,via.fin)
             numeroSemaforos+=1
             nodosSemaforos(indiceFin).addSemaforo(semaforoFin)
           }
           if (indiceInicio == -1) {
-            val semaforoInicio = Semaforo(numeroSemaforos.toString(),EstadoVerde, via,true)
+            val semaforoInicio = Semaforo(numeroSemaforos.toString(),EstadoVerde, via,via.origen,true)
             numeroSemaforos+=1
             nodoInicio.addSemaforo(semaforoInicio)
             nodosSemaforos+=nodoInicio
           }else{
-            val semaforoInicio = Semaforo(numeroSemaforos.toString(),EstadoRojo, via,true)
+            val semaforoInicio = Semaforo(numeroSemaforos.toString(),EstadoRojo, via,via.origen,true)
             numeroSemaforos+=1
             nodosSemaforos(indiceInicio).addSemaforo(semaforoInicio)
           }
