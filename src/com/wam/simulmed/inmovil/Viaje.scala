@@ -89,7 +89,7 @@ object Viaje {
     val viasRecorrido = Viaje.toQueue(viasRecorridoCompleto)
     val viaInicial = viasRecorrido.head
     val magnitudVelocidadAleatoria = Velocidad.conversorKmHorAMetroSeg((r.nextDouble() * (Simulacion.maxVelocidad - Simulacion.minVelocidad)) + Simulacion.minVelocidad)
-    val magnitudAceleracionAleatoria = Velocidad.conversorKmHorAMetroSeg((r.nextDouble() * (Simulacion.maxAceleracion - Simulacion.minAceleracion)) + Simulacion.minAceleracion)
+    val magnitudAceleracionAleatoria = (r.nextDouble() * (Simulacion.maxAceleracion - Simulacion.minAceleracion)) + Simulacion.minAceleracion
     interseccionesRecorrido.dequeue()
     val interseccionInicial = interseccionesRecorrido.head
     val puntoOrigen = new Punto(origen.x, origen.y)
