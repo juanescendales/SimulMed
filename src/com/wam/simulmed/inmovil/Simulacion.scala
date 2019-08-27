@@ -33,7 +33,7 @@ object Simulacion extends Runnable {
 
   var estadoSemaforo: EstadoSemaforo = EstadoVerde
   var listaVias = ArrayBuffer.empty[Via]
-  var nodosSemaforos=ArrayBuffer.empty[NodoSemaforo]
+  var nodosSemaforos = ArrayBuffer.empty[NodoSemaforo]
   var hilo: Thread = _ //new Thread(Simulacion)
 
   def cargar() {
@@ -187,7 +187,7 @@ object Simulacion extends Runnable {
     listaVias = vias
 
     val nodosSemaforos = ArrayBuffer[NodoSemaforo]()
-    var numeroSemaforos=0
+    var numeroSemaforos = 0
     def cargarSemaforosVia(via: Via) = {
       val nodoInicio = NodoSemaforo(via.origen)()
       val nodoFin = NodoSemaforo(via.fin)()
@@ -209,38 +209,38 @@ object Simulacion extends Runnable {
           val indiceFin = nodosSemaforos.indexOf(nodoFin)
           val indiceInicio = nodosSemaforos.indexOf(nodoInicio)
           if (indiceFin == -1) {
-            val semaforoFin = Semaforo(numeroSemaforos.toString(),EstadoVerde, via,via.fin)
-            via.semaforoFin=Some(semaforoFin)
-            numeroSemaforos+=1
+            val semaforoFin = Semaforo(numeroSemaforos.toString(), EstadoVerde, via, via.fin)
+            via.semaforoFin = Some(semaforoFin)
+            numeroSemaforos += 1
             nodoFin.addSemaforo(semaforoFin)
-            nodosSemaforos+=nodoFin
-          }else{
-            val semaforoFin = Semaforo(numeroSemaforos.toString(),EstadoRojo, via,via.fin)
-            via.semaforoFin=Some(semaforoFin)
-            numeroSemaforos+=1
+            nodosSemaforos += nodoFin
+          } else {
+            val semaforoFin = Semaforo(numeroSemaforos.toString(), EstadoRojo, via, via.fin)
+            via.semaforoFin = Some(semaforoFin)
+            numeroSemaforos += 1
             nodosSemaforos(indiceFin).addSemaforo(semaforoFin)
           }
           if (indiceInicio == -1) {
-            val semaforoInicio = Semaforo(numeroSemaforos.toString(),EstadoVerde, via,via.origen,true)
-            via.semaforoInicio=Some(semaforoInicio)
-            numeroSemaforos+=1
+            val semaforoInicio = Semaforo(numeroSemaforos.toString(), EstadoVerde, via, via.origen, true)
+            via.semaforoInicio = Some(semaforoInicio)
+            numeroSemaforos += 1
             nodoInicio.addSemaforo(semaforoInicio)
-            nodosSemaforos+=nodoInicio
-          }else{
-            val semaforoInicio = Semaforo(numeroSemaforos.toString(),EstadoRojo, via,via.origen,true)
-            via.semaforoInicio=Some(semaforoInicio)
-            numeroSemaforos+=1
+            nodosSemaforos += nodoInicio
+          } else {
+            val semaforoInicio = Semaforo(numeroSemaforos.toString(), EstadoRojo, via, via.origen, true)
+            via.semaforoInicio = Some(semaforoInicio)
+            numeroSemaforos += 1
             nodosSemaforos(indiceInicio).addSemaforo(semaforoInicio)
           }
         }
       }
     }
     listaVias.foreach(cargarSemaforosVia)
-    this.nodosSemaforos=nodosSemaforos
+    this.nodosSemaforos = nodosSemaforos
     grafo.construir(vias)
     val grafico = Grafico
-    grafico.iniciarGrafico(vias,nodosSemaforos.map(_.getSemaforos()).flatten)
- 
+    grafico.iniciarGrafico(vias, nodosSemaforos.map(_.getSemaforos()).flatten)
+
   }
   def start() {
     if (Simulacion.running) {
@@ -273,9 +273,9 @@ object Simulacion extends Runnable {
       val grafico = Grafico
       Simulacion.ts += Simulacion.dt
       while (Simulacion.ts >= Simulacion.estadoSemaforo.getTiempo) {
-        Simulacion.ts-=Simulacion.estadoSemaforo.getTiempo
-        Simulacion.estadoSemaforo=Simulacion.estadoSemaforo.avanzarEstado(Simulacion.estadoSemaforo)
-        if(Simulacion.estadoSemaforo==EstadoRojo) Simulacion.estadoSemaforo=Simulacion.estadoSemaforo.avanzarEstado(Simulacion.estadoSemaforo)
+        Simulacion.ts -= Simulacion.estadoSemaforo.getTiempo
+        Simulacion.estadoSemaforo = Simulacion.estadoSemaforo.avanzarEstado(Simulacion.estadoSemaforo)
+        if (Simulacion.estadoSemaforo == EstadoRojo) Simulacion.estadoSemaforo = Simulacion.estadoSemaforo.avanzarEstado(Simulacion.estadoSemaforo)
         Grafico.actualizarSemaforos(this.nodosSemaforos)
       }
       Viaje.listaDeVehiculosSimulacion.foreach(vehiculo => {
@@ -338,8 +338,8 @@ object Simulacion extends Runnable {
     val tiempoRealidad = t
     val tiempoSimulacion: Double = tiempoRealidad * (tRefresh.toDouble / 1000)
     val cantidadComparendos: Int = listaComparendos.length
-    var promedioExcesoComparendos:Double = 0
-    if(cantidadComparendos > 0){
+    var promedioExcesoComparendos: Double = 0
+    if (cantidadComparendos > 0) {
       promedioExcesoComparendos = listaComparendos.map(_.porcentajeExcedido).reduce((x, y) => (x + y)) / listaComparendos.length
     }
     //creacion de objetos para la creacion de los resultados
