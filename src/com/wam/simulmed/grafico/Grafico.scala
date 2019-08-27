@@ -181,19 +181,9 @@ object Grafico{
   }
   
   def actualizarSemaforos(NodosSemaforos:ArrayBuffer[NodoSemaforo]){
-    semaforos.foreach(semaforo=>{
-      semaforo.estado=semaforo.estado.avanzarEstado(semaforo.estado)
-      val semaforoGrafico: XYSeries = this.dataset.getSeries(semaforo.id)
-      semaforoGrafico.clear()
-      semaforoGrafico.add(semaforo.interseccion.x, semaforo.interseccion.y)
-  	  semaforoGrafico.add(semaforo.x, semaforo.y)
-  	  this.renderer.setSeriesShape(semaforo.serieId, new Rectangle(-4,-4,4,4))
-  	  renderer.setSeriesShapesVisible(semaforo.serieId, false)
-  	  semaforo.estado match{
-        case EstadoRojo => this.renderer.setSeriesPaint(semaforo.serieId,Color.RED)
-        case EstadoAmarillo => this.renderer.setSeriesPaint(semaforo.serieId,Color.YELLOW)
-        case EstadoVerde => this.renderer.setSeriesPaint(semaforo.serieId,Color.GREEN)
-      }
+    NodosSemaforos.foreach(nodoSemaforo=>{
+      nodoSemaforo.actualizarNodo()
+      //
     })
   }
   

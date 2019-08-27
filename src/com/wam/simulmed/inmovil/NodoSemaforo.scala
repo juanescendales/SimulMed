@@ -7,14 +7,18 @@ case class NodoSemaforo(interseccion:Interseccion)(semaforos:Queue[Semaforo]=Que
   def getSemaforos()=semaforos.toArray
   def avanzarProximo():Semaforo={
     val semaforo=semaforos.dequeue()
+    semaforo.estado=EstadoRojo
     semaforos.enqueue(semaforo)
     semaforo
   }
   def verActual():Semaforo=semaforos.front
   def actualizarNodo(){
     Simulacion.estadoSemaforo match{
-      case EstadoVerde=>
+      case EstadoVerde=>{
+        this.avanzarProximo()
+        this.verActual().estado=EstadoVerde
+      }
+      case EstadoAmarillo=>  this.verActual().estado=EstadoAmarillo
     }
-    semaforos.front
   }
 }
