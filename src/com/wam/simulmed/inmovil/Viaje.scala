@@ -32,34 +32,91 @@ class Viaje(val vehiculo: Vehiculo, val recorrido: Queue[Via], val interseccione
         }
       }
 
+      val semaforo = semaforoActual(this)
+
       //hay que verificar
+      if (semaforo.isDefined) {
+        if (distanciaDelCarroALaInterseccion <= Simulacion.XSemaforoFrenar && !vehiculo.aceleracion.frenando && semaforo.get.estado == EstadoRojo) {
+          vehiculo.aceleracion.frenando = true
+          //el XSemaforoFrenar hay que mirarlo para cuadrar bien que distancia es, si la de amarillo o la de rojo(en la linea de abajo)
+          vehiculo.aceleracion.magnitud_=(-1 * (1 / distanciaDelCarroALaInterseccion) * (math.pow(vehiculo.velocidad.magnitud, 2) / 2))
 
-      if (distanciaDelCarroALaInterseccion <= Simulacion.XSemaforoFrenar && !vehiculo.aceleracion.frenando) {
-        vehiculo.aceleracion.frenando = true
-        println("entrta")
-        //el XSemaforoFrenar hay que mirarlo para cuadrar bien que distancia es, si la de amarillo o la de rojo(en la linea de abajo)
-        vehiculo.aceleracion.magnitud_=(-1 * (1 / Simulacion.XSemaforoFrenar) * (math.pow(vehiculo.velocidad.magnitud, 2) / 2))
-      }
-
-      if (vehiculo.posicion.x > xViaFin - margenError && vehiculo.posicion.x < xViaFin + margenError && vehiculo.posicion.y > yViaFin - margenError && vehiculo.posicion.y < yViaFin + margenError) {
-        println("EntroPrro")
-        vehiculo.aceleracion.frenando = false
-        vehiculo.posicion.x = xViaFin
-        vehiculo.posicion.y = yViaFin
-        vehiculo.aceleracion.magnitud = vehiculo.aceleracion.aceleracionArranque
-        if (!interseccionesRecorrido.isEmpty) {
-          this.viaActual = recorrido.dequeue()
-          this.interseccionDestino = interseccionesRecorrido.dequeue()
-          vehiculo.velocidad.sentidoEntreDosPuntos(vehiculo.posicion, this.interseccionDestino, viaActual.angulo)
-        } else {
-          vehiculo.detenido = true
+        } else if (distanciaDelCarroALaInterseccion > Simulacion.XSemaforoAmarilloContinuar && !vehiculo.aceleracion.frenando && semaforo.get.estado == EstadoAmarillo) {
+          vehiculo.aceleracion.frenando = true
+          vehiculo.aceleracion.magnitud_=(-1 * (1 / distanciaDelCarroALaInterseccion) * (math.pow(vehiculo.velocidad.magnitud, 2) / 2))
+        } else if (vehiculo.aceleracion.frenando && semaforo.get.estado == EstadoVerde) {
+          vehiculo.aceleracion.frenando = false
+          vehiculo.aceleracion.magnitud = vehiculo.aceleracion.aceleracionArranque
         }
-        vehiculo.velocidad.magnitud_=(0) //si esta en rojo meto esta cosa, de otra manera no
+
+        if (vehiculo.posicion.x > xViaFin - margenError && vehiculo.posicion.x < xViaFin + margenError && vehiculo.posicion.y > yViaFin - margenError && vehiculo.posicion.y < yViaFin + margenError && semaforo.get.estado == EstadoRojo) {
+          vehiculo.posicion.x = xViaFin
+          vehiculo.posicion.y = yViaFin
+          vehiculo.aceleracion.magnitud = 0
+          vehiculo.velocidad.magnitud_=(0)
+          if (interseccionesRecorrido.isEmpty) {
+            vehiculo.detenido = true
+          }
+
+        } else if (vehiculo.posicion.x > xViaFin - margenError && vehiculo.posicion.x < xViaFin + margenError && vehiculo.posicion.y > yViaFin - margenError && vehiculo.posicion.y < yViaFin + margenError && semaforo.get.estado == EstadoVerde) {
+          vehiculo.aceleracion.frenando = false
+          vehiculo.velocidad.magnitud = 0
+          vehiculo.posicion.x = xViaFin
+          vehiculo.posicion.y = yViaFin
+          vehiculo.aceleracion.magnitud = vehiculo.aceleracion.aceleracionArranque
+          if (!interseccionesRecorrido.isEmpty) {
+            this.viaActual = recorrido.dequeue()
+            this.interseccionDestino = interseccionesRecorrido.dequeue()
+            vehiculo.velocidad.sentidoEntreDosPuntos(vehiculo.posicion, this.interseccionDestino, viaActual.angulo)
+          } else {
+            vehiculo.detenido = true
+          }
+
+        }
+      } else {
+        if (vehiculo.posicion.x > xViaFin - margenError && vehiculo.posicion.x < xViaFin + margenError && vehiculo.posicion.y > yViaFin - margenError && vehiculo.posicion.y < yViaFin + margenError) {
+          vehiculo.posicion.x = xViaFin
+          vehiculo.posicion.y = yViaFin
+          vehiculo.aceleracion.magnitud = vehiculo.aceleracion.aceleracionArranque
+          if (!interseccionesRecorrido.isEmpty) {
+            this.viaActual = recorrido.dequeue()
+            this.interseccionDestino = interseccionesRecorrido.dequeue()
+            vehiculo.velocidad.sentidoEntreDosPuntos(vehiculo.posicion, this.interseccionDestino, viaActual.angulo)
+          } else {
+            vehiculo.detenido = true
+          }
+        }
 
       }
       println(vehiculo.velocidad.magnitud)
       //println(vehiculo.aceleracion.magnitud)
     }
+  }
+
+  def semaforoActual(vehiculo: Viaje): Option[Semaforo] = {
+    var semaforo: Option[Semaforo] = None
+    val semaforoInicio = vehiculo.viaActual.semaforoInicio
+    val semaforoFin = vehiculo.viaActual.semaforoFin
+    if (semaforoFin.isDefined && semaforoInicio.isDefined) {
+      if (semaforoInicio.get.interseccion == vehiculo.interseccionDestino) {
+        semaforo = semaforoInicio;
+      } else if (semaforoFin.get.interseccion == vehiculo.interseccionDestino) {
+        semaforo = semaforoFin;
+      }
+
+    } else if (semaforoFin.isDefined) {
+      if (semaforoFin.get.interseccion == vehiculo.interseccionDestino) {
+        semaforo = semaforoFin;
+      }
+
+    } else if (semaforoInicio.isDefined) {
+      if (semaforoInicio.get.interseccion == vehiculo.interseccionDestino) {
+        semaforo = semaforoInicio;
+      }
+
+    }
+    semaforo
+
   }
   def pararVehiculo(vehiculo: Viaje) {
     Viaje.listaDeVehiculosSimulacion.-=(vehiculo)

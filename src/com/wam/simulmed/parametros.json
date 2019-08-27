@@ -4,11 +4,11 @@
 		"tRefresh": 10,
 		"vehiculos": {
 			"minimo": 1,
-			"maximo": 2
+			"maximo": 1
 		},
 		"velocidad": {
 			"minimo": 40,
-			"maximo": 80
+			"maximo": 150
 		},
 		"proporciones": {
 			"carros": 0.4,
@@ -28,7 +28,7 @@
 		},
 		"distanciasFrenadoVehiculos": {
 			"XSemaforoFrenar": 400,
-			"XSemaforoAmarilloContinuar": 20
+			"XSemaforoAmarilloContinuar": 200
 		}
 	}
 }
