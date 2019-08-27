@@ -13,7 +13,7 @@ object Simulacion extends Runnable {
   val parametros = jsonAdmin.leerDatosIniciales(ruta + "parametros.json")
   var running = false
   val grafo = GrafoVias
-  var ts:Double=0
+  var ts: Double = 0
   var t: Double = 0
   var dt: Double = parametros.pametrosSimulacion.dt
   val tRefresh = parametros.pametrosSimulacion.tRefresh
@@ -31,7 +31,7 @@ object Simulacion extends Runnable {
 
   val totalVehiculos = (((new scala.util.Random).nextDouble() * (Simulacion.maxVehiculos - Simulacion.minVehiculos)) + Simulacion.minVehiculos).toInt
 
-  var estadoSemaforo:EstadoSemaforo=EstadoVerde
+  var estadoSemaforo: EstadoSemaforo = EstadoVerde
   var listaVias = ArrayBuffer.empty[Via]
   var nodosSemaforos=ArrayBuffer.empty[NodoSemaforo]
   var hilo: Thread = _ //new Thread(Simulacion)
@@ -176,9 +176,9 @@ object Simulacion extends Runnable {
       new Via(col80, juan80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", Some("80")),
       new Via(juan80, gema, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", Some("80")),
       new Via(gema, _30_80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", Some("80")),
-      
+
       v9,
-      
+
       new Via(_65_80, gu80, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", Some("80")),
       new Via(gu80, agua, 60, TipoVia("Carrera"), Sentido.dobleVia, "80", Some("80")),
       v8,
@@ -195,13 +195,13 @@ object Simulacion extends Runnable {
         case Sentido("Un sentido") => {
           val indice = nodosSemaforos.indexOf(nodoFin)
           if (indice == -1) {
-            val semaforoFin = Semaforo(numeroSemaforos.toString(),EstadoVerde, via,via.fin)
-            numeroSemaforos+=1
+            val semaforoFin = Semaforo(numeroSemaforos.toString(), EstadoVerde, via, via.fin)
+            numeroSemaforos += 1
             nodoFin.addSemaforo(semaforoFin)
-            nodosSemaforos+=nodoFin
-          }else{
-            val semaforoFin = Semaforo(numeroSemaforos.toString(),EstadoRojo, via,via.fin)
-            numeroSemaforos+=1
+            nodosSemaforos += nodoFin
+          } else {
+            val semaforoFin = Semaforo(numeroSemaforos.toString(), EstadoRojo, via, via.fin)
+            numeroSemaforos += 1
             nodosSemaforos(indice).addSemaforo(semaforoFin)
           }
         }
@@ -271,8 +271,8 @@ object Simulacion extends Runnable {
 
     while (!Viaje.listaDeVehiculosSimulacion.isEmpty && Simulacion.running) {
       val grafico = Grafico
-      Simulacion.ts+=Simulacion.dt
-      while(Simulacion.ts>=Simulacion.estadoSemaforo.getTiempo){
+      Simulacion.ts += Simulacion.dt
+      while (Simulacion.ts >= Simulacion.estadoSemaforo.getTiempo) {
         println(Simulacion.estadoSemaforo)
         Simulacion.ts-=Simulacion.estadoSemaforo.getTiempo
         Grafico.actualizarSemaforos(this.nodosSemaforos)
@@ -293,13 +293,13 @@ object Simulacion extends Runnable {
 
     //Calculos Finales
     if (Simulacion.running) {
-      //calculoDeResultados(Viaje.listaDeVehiculosSimulacionParaCalculos)   DESCOMENTAR LUEGO, SON LOS RESULTADOS
+      //calculoDeResultados(Viaje.listaDeVehiculosSimulacionParaCalculos, Comparendo.listaComparendos)   DESCOMENTAR LUEGO, SON LOS RESULTADOS
     }
 
     //Fin Calculos Finales
 
   }
-  def calculoDeResultados(listaDeVehiculosSimulacionParaCalculos: ArrayBuffer[Viaje]): Unit = {
+  def calculoDeResultados(listaDeVehiculosSimulacionParaCalculos: ArrayBuffer[Viaje], listaComparendos: ArrayBuffer[Comparendo]): Unit = {
 
     val totalVehiculos = listaDeVehiculosSimulacionParaCalculos.length
     val totalCarros = listaDeVehiculosSimulacionParaCalculos.filter(_.vehiculo.isInstanceOf[Carro]).length
@@ -338,7 +338,11 @@ object Simulacion extends Runnable {
     val velVehiProm = Velocidad.conversorMetroSegAKmHor((velocidadesVehiculos.sum) / (velocidadesVehiculos.length))
     val tiempoRealidad = t
     val tiempoSimulacion: Double = tiempoRealidad * (tRefresh.toDouble / 1000)
-
+    val cantidadComparendos: Int = listaComparendos.length
+    var promedioExcesoComparendos:Double = 0
+    if(cantidadComparendos > 0){
+      promedioExcesoComparendos = listaComparendos.map(_.porcentajeExcedido).reduce((x, y) => (x + y)) / listaComparendos.length
+    }
     //creacion de objetos para la creacion de los resultados
     val salidaVehiculos = new SalidaVehiculos(totalVehiculos, totalCarros, totalMotos, totalBuses, totalCamiones, totalMototaxis)
     val vehiculosEnInterseccion = new VehiculosEnInterseccion(promedioOrigen, promedioDestino, sinOrigen, sinDestino)
@@ -346,8 +350,9 @@ object Simulacion extends Runnable {
     val tiempos = new Tiempos(tiempoSimulacion, tiempoRealidad)
     val salidaVelocidades = new SalidaVelocidades(velVehiMin, velVehiMax, velVehiProm)
     val distancias = new Distancias(distanciaMinima, distanciaMaxima, distanciaPromedio)
+    val comparendos = new ComparendosJson(cantidadComparendos, promedioExcesoComparendos)
 
-    val resultados = new ResultadosSimulacion(salidaVehiculos, mallaVial, tiempos, salidaVelocidades, distancias)
+    val resultados = new ResultadosSimulacion(salidaVehiculos, mallaVial, tiempos, salidaVelocidades, distancias, comparendos)
     val salida = new Salida(resultados)
     jsonAdmin.escribirArchivo(ruta + "resultados.json", salida)
   }
