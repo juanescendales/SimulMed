@@ -7,7 +7,7 @@
 			"maximo": 1
 		},
 		"velocidad": {
-			"minimo": 40,
+			"minimo": 100,
 			"maximo": 150
 		},
 		"proporciones": {
@@ -24,7 +24,7 @@
 		},
 		"aceleración": {
 			"mínimo": 5,
-			"máximo": 20
+			"máximo": 5
 		},
 		"distanciasFrenadoVehiculos": {
 			"XSemaforoFrenar": 400,
