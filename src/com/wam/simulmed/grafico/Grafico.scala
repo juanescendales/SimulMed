@@ -70,9 +70,9 @@ object Grafico{
   	
 
   	val range:  ValueAxis = plot.getRangeAxis()
-    range.setVisible(false)
+    range.setVisible(true)
     val domain: ValueAxis = plot.getDomainAxis()
-    domain.setVisible(false)
+    domain.setVisible(true)
     
     this.cargarIntersecciones(plot)
 
@@ -110,12 +110,14 @@ object Grafico{
       semaforoGrafico.add(semaforo.interseccion.x, semaforo.interseccion.y)
   	  semaforoGrafico.add(semaforo.x, semaforo.y)
   	  this.dataset.addSeries(semaforoGrafico)
-  	  this.renderer.setSeriesShape(this.dataset.getSeriesCount-1, new Rectangle(-4,-4,4,4))
-  	  renderer.setSeriesShapesVisible(dataset.getSeriesCount-1, false)
+  	  semaforo.serieId=this.dataset.getSeriesCount-1
+  	  this.renderer.setSeriesShape(semaforo.serieId, new Rectangle(-4,-4,4,4))
+  	  renderer.setSeriesShapesVisible(semaforo.serieId, false)
   	  semaforo.estado match{
-        case EstadoRojo => this.renderer.setSeriesPaint(this.dataset.getSeriesCount-1,Color.RED)
-        case EstadoVerde => this.renderer.setSeriesPaint(this.dataset.getSeriesCount-1,Color.GREEN)
+        case EstadoRojo => this.renderer.setSeriesPaint(semaforo.serieId,Color.RED)
+        case EstadoVerde => this.renderer.setSeriesPaint(semaforo.serieId,Color.GREEN)
       }
+      
     })
   }
   
@@ -178,19 +180,19 @@ object Grafico{
     vehiculoGrafico.add(punto.x, punto.y)
   }
   
-  def actualizarSemaforos(semaforos:ArrayBuffer[Semaforo]){
+  def actualizarSemaforos(NodosSemaforos:ArrayBuffer[NodoSemaforo]){
     semaforos.foreach(semaforo=>{
       semaforo.estado=semaforo.estado.avanzarEstado(semaforo.estado)
       val semaforoGrafico: XYSeries = this.dataset.getSeries(semaforo.id)
       semaforoGrafico.clear()
       semaforoGrafico.add(semaforo.interseccion.x, semaforo.interseccion.y)
   	  semaforoGrafico.add(semaforo.x, semaforo.y)
-  	  this.renderer.setSeriesShape(semaforoGrafico.getItemCount, new Rectangle(-4,-4,4,4))
-  	  renderer.setSeriesShapesVisible(semaforoGrafico.getItemCount, false)
+  	  this.renderer.setSeriesShape(semaforo.serieId, new Rectangle(-4,-4,4,4))
+  	  renderer.setSeriesShapesVisible(semaforo.serieId, false)
   	  semaforo.estado match{
-        case EstadoRojo => this.renderer.setSeriesPaint(this.dataset.getSeriesCount-1,Color.RED)
-        case EstadoAmarillo => this.renderer.setSeriesPaint(this.dataset.getSeriesCount-1,Color.YELLOW)
-        case EstadoVerde => this.renderer.setSeriesPaint(this.dataset.getSeriesCount-1,Color.GREEN)
+        case EstadoRojo => this.renderer.setSeriesPaint(semaforo.serieId,Color.RED)
+        case EstadoAmarillo => this.renderer.setSeriesPaint(semaforo.serieId,Color.YELLOW)
+        case EstadoVerde => this.renderer.setSeriesPaint(semaforo.serieId,Color.GREEN)
       }
     })
   }
