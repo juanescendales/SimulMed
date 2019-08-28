@@ -60,7 +60,7 @@ class Viaje(val vehiculo: Vehiculo, val recorrido: Queue[Via], val interseccione
 
         } else if (vehiculo.posicion.x > xViaFin - margenError && vehiculo.posicion.x < xViaFin + margenError && vehiculo.posicion.y > yViaFin - margenError && vehiculo.posicion.y < yViaFin + margenError && semaforo.get.estado == EstadoVerde) {
           vehiculo.aceleracion.frenando = false
-          vehiculo.velocidad.magnitud = 0
+          //vehiculo.velocidad.magnitud = 0
           vehiculo.posicion.x = xViaFin
           vehiculo.posicion.y = yViaFin
           vehiculo.aceleracion.magnitud = vehiculo.aceleracion.aceleracionArranque
@@ -72,6 +72,29 @@ class Viaje(val vehiculo: Vehiculo, val recorrido: Queue[Via], val interseccione
             vehiculo.detenido = true
           }
 
+        } else if (vehiculo.posicion.x > xViaFin - margenError && vehiculo.posicion.x < xViaFin + margenError && vehiculo.posicion.y > yViaFin - margenError && vehiculo.posicion.y < yViaFin + margenError && semaforo.get.estado == EstadoAmarillo) {
+          vehiculo.posicion.x = xViaFin
+          vehiculo.posicion.y = yViaFin
+          if (distanciaDelCarroALaInterseccion >= Simulacion.XSemaforoAmarilloContinuar) {
+            vehiculo.aceleracion.magnitud = 0
+            vehiculo.velocidad.magnitud = (0)
+            if (interseccionesRecorrido.isEmpty) {
+              vehiculo.detenido = true
+            }
+          } else {
+            vehiculo.aceleracion.frenando = false
+            //vehiculo.velocidad.magnitud = 0
+            vehiculo.posicion.x = xViaFin
+            vehiculo.posicion.y = yViaFin
+            vehiculo.aceleracion.magnitud = vehiculo.aceleracion.aceleracionArranque
+            if (!interseccionesRecorrido.isEmpty) {
+              this.viaActual = recorrido.dequeue()
+              this.interseccionDestino = interseccionesRecorrido.dequeue()
+              vehiculo.velocidad.sentidoEntreDosPuntos(vehiculo.posicion, this.interseccionDestino, viaActual.angulo)
+            } else {
+              vehiculo.detenido = true
+            }
+          }
         }
       } else {
         if (vehiculo.posicion.x > xViaFin - margenError && vehiculo.posicion.x < xViaFin + margenError && vehiculo.posicion.y > yViaFin - margenError && vehiculo.posicion.y < yViaFin + margenError) {
