@@ -1,10 +1,10 @@
 {
 	"pametrosSimulacion": {
 		"dt": 1,
-		"tRefresh": 10,
+		"tRefresh": 1,
 		"vehiculos": {
-			"minimo": 1,
-			"maximo": 1
+			"minimo": 100,
+			"maximo": 200
 		},
 		"velocidad": {
 			"minimo": 100,
@@ -27,8 +27,8 @@
 			"máximo": 5
 		},
 		"distanciasFrenadoVehiculos": {
-			"XSemaforoFrenar": 400,
-			"XSemaforoAmarilloContinuar": 200
+			"XSemaforoFrenar": 40,
+			"XSemaforoAmarilloContinuar": 20
 		}
 	}
 }

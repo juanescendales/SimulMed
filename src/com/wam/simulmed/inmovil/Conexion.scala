@@ -88,7 +88,7 @@ object Conexion {
     lista.foreach(f => {
       var script = s"""
         create(viaje:Viaje)
-        create(v:Vehiculo{placa:"${f.vehiculo.placa}",tipoVehiculo: "${f.vehiculo.getClass.getSimpleName})
+        create(v:Vehiculo{placa:'${f.vehiculo.placa}',tipoVehiculo: '${f.vehiculo.getClass.getSimpleName}'})
         create(p:Punto{x:${f.vehiculo.posicion.x}, y:${f.vehiculo.posicion.y}})
         create(a:Aceleracion{magnitud:${f.vehiculo.aceleracion.magnitud}, frenando:${f.vehiculo.aceleracion.frenando}, aceleracionArranque:${f.vehiculo.aceleracion.aceleracionArranque}})
         create(vel:Velocidad{magnitud:${f.vehiculo.velocidad.magnitud}, velocidadTotalMagnitud:${f.vehiculo.velocidad.velocidadTotalMagnitud}, angulo: ${f.vehiculo.velocidad.direccion.valor}, sentidoX: ${f.vehiculo.velocidad.sentidoX}, sentidoY: ${f.vehiculo.velocidad.sentidoY}})
