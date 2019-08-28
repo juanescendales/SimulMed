@@ -17,6 +17,11 @@ object KeyListen extends KeyListener {
     if (event.getKeyCode == 117) {
       Simulacion.stop()
     }
+    
+    if (event.getKeyCode == 113) {
+      Simulacion.guardarDatos()
+      Simulacion.stop()
+    }
 
   }
 

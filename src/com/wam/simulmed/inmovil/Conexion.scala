@@ -81,10 +81,9 @@ object Conexion {
     driver.close()
   }
   def guardarDatosViaje() {
-    println("ENTRE")
+    println("Aguarda mientras se ejecuta")
     val (driver, session) = getSession()
     val lista = Viaje.listaDeVehiculosSimulacionParaCalculos
-    print(lista.length)
     lista.foreach(f => {
       var script = s"""
         create(viaje:Viaje)
@@ -113,7 +112,6 @@ object Conexion {
           """
         count += 1
         script = script + aux
-        println(script)
       })
       interseccionesRecorrido.foreach(r => {
         val nombreInterseccion = r.nombre
@@ -149,10 +147,8 @@ object Conexion {
         create(viaje)-[:RECORRE4]->(interComp)
         """
       script = script + aux
-      println(script)
       val result = session.run(script)
     })
-    println("hola pai")
     session.close()
     driver.close()
   }
@@ -210,6 +206,34 @@ object Conexion {
     session.close()
     driver.close()
     array
+  }
+  
+  def guardarNodosSemaforos(nodos:ArrayBuffer[NodoSemaforo]){
+    //Se simulan las intersecciones como nodos semaforos
+    val (driver, session) = Conexion.getSession()
+    nodos.foreach(nodo=>{
+      val script=s"""
+        MATCH (i:Interseccion{ nombre:'${nodo.interseccion.nombre.get}'}) SET i.ts=${nodo.verTiempoActual()},i.semaforoActual='${nodo.verActual().id}',i.estadoSemaforo='${nodo.verActual().estado}'
+        """
+      val result = session.run(script)
+    })
+    session.close()
+    driver.close()
+  }
+  
+  def cargarNodosSemaforos(){
+    val (driver, session) = Conexion.getSession()
+    val script = s"match(i:Interseccion) return(i)"
+    val result = session.run(script)
+    while(result.hasNext()) {
+        val nodo = result.next().values().get(0)
+        val interseccion=Interseccion(nodo.get("xi").asInt, nodo.get("yi").asInt, Some(nodo.get("nombre").asString))
+        val nodoSemaforo=Simulacion.nodosSemaforos.find(inte=>inte==NodoSemaforo(interseccion)())
+      println(nodoSemaforo.get.getSemaforos())
+      
+      } 
+    session.close()
+    driver.close()
   }
 
 }

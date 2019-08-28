@@ -123,7 +123,6 @@ object Simulacion extends Runnable {
       Viaje.apply()
     }
     Simulacion.running = true
-    Conexion.guardarDatosViaje()
     while (!Viaje.listaDeVehiculosSimulacion.isEmpty && Simulacion.running) {
       val grafico = Grafico
       this.nodosSemaforos.foreach(nodo => {
@@ -150,6 +149,13 @@ object Simulacion extends Runnable {
     //Fin Calculos Finales
 
   }
+  
+  def guardarDatos(){
+    Conexion.eliminarViajes
+    Conexion.guardarDatosViaje()
+    Conexion.guardarNodosSemaforos(this.nodosSemaforos)
+  }
+  
   def calculoDeResultados(listaDeVehiculosSimulacionParaCalculos: ArrayBuffer[Viaje], listaComparendos: ArrayBuffer[Comparendo]): Unit = {
 
     val totalVehiculos = listaDeVehiculosSimulacionParaCalculos.length

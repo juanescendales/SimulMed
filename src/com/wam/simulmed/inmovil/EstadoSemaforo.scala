@@ -12,8 +12,8 @@ trait EstadoSemaforo{
 }
 
 object EstadoAmarillo extends EstadoSemaforo{
-  private val tiempoAmarillo:Double=15
-  val distanciaFrenado:Double=100
+  val tiempoAmarillo:Double=Simulacion.tiempoAmarillo
+  val distanciaFrenado:Double=Simulacion.XSemaforoFrenar
   def getTiempo:Double=tiempoAmarillo
   override def toString = "EstadoAmarillo"
 } 
@@ -21,7 +21,7 @@ object EstadoAmarillo extends EstadoSemaforo{
 object EstadoVerde extends EstadoSemaforo{
   val minTiempoVerde=Simulacion.minTiempoVerde
   val maxTiempoVerde=Simulacion.maxTiempoVerde
-  val tiempoVerde:Double=0
+  val tiempoVerde:Double=0 //Depende de cada semaforo
   val distanciaFrenado:Double=EstadoRojo.distanciaFrenado*2
   def getTiempo:Double=tiempoVerde
   override def toString = "EstadoVerde"
