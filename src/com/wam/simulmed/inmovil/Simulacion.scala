@@ -95,7 +95,7 @@ object Simulacion extends Runnable {
     grafo.construir(listaVias)
     val grafico = Grafico
     grafico.iniciarGrafico(listaVias, nodosSemaforos.map(_.getSemaforos()).flatten)
-
+    
   }
   def start() {
     if (Simulacion.running) {
@@ -123,11 +123,11 @@ object Simulacion extends Runnable {
       Viaje.apply()
     }
     Simulacion.running = true
-
+    Conexion.guardarDatosViaje()
     while (!Viaje.listaDeVehiculosSimulacion.isEmpty && Simulacion.running) {
       val grafico = Grafico
-      this.nodosSemaforos.foreach(nodo=>{
-        nodo.ts+=this.dt
+      this.nodosSemaforos.foreach(nodo => {
+        nodo.ts += this.dt
         nodo.verificarNodo()
       })
       Viaje.listaDeVehiculosSimulacion.foreach(vehiculo => {

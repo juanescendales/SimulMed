@@ -60,7 +60,6 @@ class Viaje(val vehiculo: Vehiculo, val recorrido: Queue[Via], val interseccione
 
         } else if (vehiculo.posicion.x > xViaFin - margenError && vehiculo.posicion.x < xViaFin + margenError && vehiculo.posicion.y > yViaFin - margenError && vehiculo.posicion.y < yViaFin + margenError && semaforo.get.estado == EstadoVerde) {
           vehiculo.aceleracion.frenando = false
-          //vehiculo.velocidad.magnitud = 0
           vehiculo.posicion.x = xViaFin
           vehiculo.posicion.y = yViaFin
           vehiculo.aceleracion.magnitud = vehiculo.aceleracion.aceleracionArranque
@@ -83,7 +82,6 @@ class Viaje(val vehiculo: Vehiculo, val recorrido: Queue[Via], val interseccione
             }
           } else {
             vehiculo.aceleracion.frenando = false
-            //vehiculo.velocidad.magnitud = 0
             vehiculo.posicion.x = xViaFin
             vehiculo.posicion.y = yViaFin
             vehiculo.aceleracion.magnitud = vehiculo.aceleracion.aceleracionArranque
