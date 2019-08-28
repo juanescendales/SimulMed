@@ -9,6 +9,7 @@ case class Via(val id:Int, val origen: Interseccion, val fin: Interseccion, val 
   type T = Interseccion
   val distancia: Double = Math.sqrt(Math.pow(fin.x - origen.x, 2) + Math.pow(fin.y - origen.y, 2))
   Via.listaVias += ((this.id-> this))
+  Simulacion.listaVias += this
 }
 
 object Via{
