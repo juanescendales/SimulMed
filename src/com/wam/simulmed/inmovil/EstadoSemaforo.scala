@@ -19,7 +19,9 @@ object EstadoAmarillo extends EstadoSemaforo{
 } 
 
 object EstadoVerde extends EstadoSemaforo{
-  val tiempoVerde:Double=120
+  val minTiempoVerde=Simulacion.minTiempoVerde
+  val maxTiempoVerde=Simulacion.maxTiempoVerde
+  val tiempoVerde:Double=0
   val distanciaFrenado:Double=EstadoRojo.distanciaFrenado*2
   def getTiempo:Double=tiempoVerde
   override def toString = "EstadoVerde"

@@ -1,7 +1,7 @@
 package com.wam.simulmed.ciudad
 import com.wam.simulmed.inmovil._
 
-class Semaforo(val id: String, val xi: Double, val yi: Double,var estado: EstadoSemaforo, val via: Via, val interseccion: Interseccion) extends Punto(xi, yi){
+class Semaforo(val id: String, val xi: Double, val yi: Double,var estado: EstadoSemaforo,val tiempoVerde:Double, val via: Via, val interseccion: Interseccion) extends Punto(xi, yi){
   var serieId:Int=0
 }
 
@@ -18,6 +18,7 @@ object Semaforo{
       x=xi
       y=yi
     }
-    new Semaforo("semaforo"+id,x,y,estado,via,interseccion)
+    val tiempoVerde = (((new scala.util.Random).nextDouble() * (EstadoVerde.maxTiempoVerde - EstadoVerde.minTiempoVerde)) + EstadoVerde.minTiempoVerde).toDouble
+    new Semaforo("semaforo"+id,x,y,estado,tiempoVerde,via,interseccion)
   }
 }

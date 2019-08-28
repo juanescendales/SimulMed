@@ -13,7 +13,6 @@ object Simulacion extends Runnable {
   val parametros = jsonAdmin.leerDatosIniciales(ruta + "parametros.json")
   var running = false
   val grafo = GrafoVias
-  var ts: Double = 0
   var t: Double = 0
   var dt: Double = parametros.pametrosSimulacion.dt
   val tRefresh = parametros.pametrosSimulacion.tRefresh
@@ -271,13 +270,10 @@ object Simulacion extends Runnable {
 
     while (!Viaje.listaDeVehiculosSimulacion.isEmpty && Simulacion.running) {
       val grafico = Grafico
-      Simulacion.ts += Simulacion.dt
-      while (Simulacion.ts >= Simulacion.estadoSemaforo.getTiempo) {
-        Simulacion.ts -= Simulacion.estadoSemaforo.getTiempo
-        Simulacion.estadoSemaforo = Simulacion.estadoSemaforo.avanzarEstado(Simulacion.estadoSemaforo)
-        if (Simulacion.estadoSemaforo == EstadoRojo) Simulacion.estadoSemaforo = Simulacion.estadoSemaforo.avanzarEstado(Simulacion.estadoSemaforo)
-        Grafico.actualizarSemaforos(this.nodosSemaforos)
-      }
+      this.nodosSemaforos.foreach(nodo=>{
+        nodo.ts+=this.dt
+        nodo.verificarNodo()
+      })
       Viaje.listaDeVehiculosSimulacion.foreach(vehiculo => {
         vehiculo.mover(Simulacion.dt)
         grafico.actualizarVehiculo(vehiculo)
