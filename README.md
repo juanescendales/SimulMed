@@ -1,5 +1,5 @@
 ﻿# SimulMed
-Basic road simulation of the Medellin City
+Basic road simulation of Medellin.
 
 # NOMBRES
 
